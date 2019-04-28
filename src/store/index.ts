@@ -30,6 +30,7 @@ const initialState = {};
 // create store
 const store = createStore(rootReducer(history), initialState, enhancer);
 
+services.ws.init(store.dispatch)
 epicMiddleware.run(rootEpic);
 
 // export store singleton instance

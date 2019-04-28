@@ -11,5 +11,5 @@ export default {
   api: {
     articles,
   },
-  ws,
+  ws: ws.default(),
 };

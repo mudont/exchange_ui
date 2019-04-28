@@ -3,11 +3,13 @@ import React, { Component } from 'react';
 //import {Navbar, Button} from 'react-bootstrap';
 //import DNavbar from 'react-bootstrap/Navbar';
 // import * as Button from 'react-bootstrap/Button';
+import {createBrowserHistory} from 'history';
 
 import './App.css';
-
-export class App extends Component {
-  goTo(route) {
+import Auth from '../Auth';
+type History = ReturnType<typeof createBrowserHistory>
+export class App extends Component<{auth: Auth, history: History}> {
+  goTo(route: string) {
     this.props.history.replace(`/${route}`)
   }
 

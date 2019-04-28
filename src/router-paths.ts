@@ -3,6 +3,10 @@ const pathsMap = {
   addArticle: () => '/add-article',
   viewArticle: (articleId: string) => `/articles/${articleId}`,
   editArticle: (articleId: string) => `/articles/${articleId}/edit`,
+  auth: () => '/auth',
+  auth_home: () => '/home',
+  callback: () => '/callback',
+  exchange: () => '/exchange',
 };
 type PathsMap = typeof pathsMap;
 

@@ -1,10 +1,10 @@
 // @ts-nocheck
-import React, { Component } from 'react';
+import React, { Component, CSSProperties } from 'react';
 import loading from './loading.svg';
 
 export class Callback extends Component {
   render() {
-    const style = {
+    const style: CSSProperties = {
       position: 'absolute',
       display: 'flex',
       justifyContent: 'center',

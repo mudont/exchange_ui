@@ -11,10 +11,9 @@ export default function () {
         const jwt = localStorage.getItem('idToken')
         //const username = jwt ? `${jwt}@` : ""
         console.log(`Connecting to websocket jwt:${jwt}`);
-        // ws = new WebSocket(
-        //     `ws://${process.env.REACT_APP_WS_SERVER_URL}?token=${jwt}`,
-        //     jwt||"");
-        ws = new WebSocket(`ws://${process.env.REACT_APP_WS_SERVER_URL}`)
+        ws = new WebSocket(
+            `${process.env.REACT_APP_WS_SERVER_URL}?token=${jwt}`);
+        //ws = new WebSocket(`ws://${process.env.REACT_APP_WS_SERVER_URL}`)
         ws.onopen = function (event: Event) {
             console.log(`WS Opened : ${JSON.stringify(event)}`)
         }

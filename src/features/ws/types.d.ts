@@ -29,6 +29,11 @@ declare module 'MyModels' {
         price: string;
         bs: string;
     }
-    export type WsObject = Hello | Instrument | Order | Trade;
+    export type LadderItem = [number, number, number]
+    export type Ladder = LadderItem[] 
+    export interface Depth {
+        [symbol: string]: Ladder
+    }
+    export type WsObject = Hello | Instrument | Order | Trade | Depth;
   }
   

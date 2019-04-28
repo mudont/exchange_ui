@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+import Auth from '../Auth';
 
-export class Home extends Component {
+export class Home extends Component<{auth:Auth}> {
   login() {
     this.props.auth.login();
   }
@@ -19,10 +20,10 @@ export class Home extends Component {
           !isAuthenticated() && (
               <h4>
                 You are not logged in! Please{' '}
-                <a style={{ cursor: 'pointer' }}
+                <button style={{ cursor: 'pointer' }}
                   onClick={this.login.bind(this)}>
                   Log In
-                </a>
+                </button>
                 {' '}to continue.
               </h4>
             )

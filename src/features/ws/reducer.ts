@@ -1,15 +1,18 @@
 import { RootAction } from 'MyTypes';
-import { Trade, Order, Instrument, Hello } from 'MyModels';
+import { Trade, Order, Instrument, Depth, Hello } from 'MyModels';
 import { combineReducers } from 'redux';
 import { getType } from 'typesafe-actions';
+import * as R from 'ramda';
 
 import * as actions from './actions';
+
 
 export type SandboxState = Readonly<{
   hello: Hello,
   instruments: ReadonlyArray<Instrument>;
   trades: ReadonlyArray<Trade>;
   orders: ReadonlyArray<Order>;
+  depth: Readonly<Depth>;
 }>;
 
 export default combineReducers<SandboxState, RootAction>({
@@ -60,5 +63,19 @@ export default combineReducers<SandboxState, RootAction>({
       default:
         return state;
     }
-  }
+  },
+
+  depth: (state={}, action) => {
+    switch (action.type) {
+      case getType(actions.wsReceive):
+        if ('Depth' === action.payload._type) {
+          return {...state, ...(R.omit(['_type','ts'],action.payload) as Depth)}; // 
+        } else {
+          return state;
+        }
+      default:
+        return state;
+    }
+  },
+  
 });
