@@ -4,12 +4,16 @@ import DepthLadder from './DepthLadder';
 import FlexRow from '../../../components/FlexRow';
 import { connect } from 'react-redux';
 import { RootState } from 'MyTypes';
+import Auth from '../../../services/auth0-service';
+import { Instrument } from 'MyModels';
 
 const ReactGridLayout = WidthProvider(RGL);
 const originalLayout = getFromLS("layout") || [];
 interface MyProps {
     onLayoutChange: any,
     username: string,
+    auth: Auth,
+    instruments: Instrument[],
  }
 /**
  * This layout demonstrates how to sync to localstorage.
@@ -18,6 +22,7 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
   static defaultProps = {
     className: "layout",
     username: 'unknown',
+    instruments: [],
     cols: 12,
     rowHeight: 30,
     onLayoutChange: function() {}
@@ -49,10 +54,37 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
   }
 
   render() {
+    const { isAuthenticated } = this.props.auth;
     return (
-      <div>
-        <FlexRow>
-            <label>Hello {this.props.username}</label>
+        <div>
+            <FlexRow>
+            <div className="container">
+            {
+            isAuthenticated() && (
+                <h4>
+                    Hello {this.props.username}
+                    <button style={{ cursor: 'pointer' }}
+                        onClick={this.props.auth.logout.bind(this.props.auth)}>
+                    Log Out
+                    </button>
+                </h4>
+                )
+            }
+            {
+            !isAuthenticated() && (
+                <h4>
+                    You are not logged in! Please{' '}
+                    <button style={{ cursor: 'pointer' }}
+                    onClick={this.props.auth.login.bind(this.props.auth)}>
+                    Log In
+                    </button>
+                    {' '}to continue.
+                </h4>
+                )
+            }
+        </div>
+
+            
         </FlexRow>
         <ReactGridLayout
           {...this.props}
@@ -63,28 +95,21 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
                 key="Order" data-grid={{ w: 2, h: 3, x: 0, y: 0, static: true, autoSize: true,}}>
                 <span className="text">Order</span>
           </div>
-          <div style={{width:'100%', fontSize: '10px',}} 
-               key="IndPakWC19" data-grid={{ w: 1, h: 10, x: 2, y: 0,  autoSize: true,  }}>
-            <DepthLadder symbol='IndPakWC19'></DepthLadder>
-          </div>
-          <div style={{width:'100%', fontSize: '10px',}} 
-               key="IndWChamp19" data-grid={{ w: 1, h: 10, x: 4, y: 0, autoSize: true, }}>
-            <DepthLadder symbol='IndWChamp19'></DepthLadder>
-          </div>
-          <div style={{backgroundColor: 'DarkOrange', width:'100%'}} 
-               key="4" data-grid={{ w: 2, h: 3, x: 6, y: 0, autoSize: true, }}>
-            <span className="text">4</span>
-          </div>
-          <div style={{backgroundColor: 'DarkSlateBlue', width:'100%'}} 
-               key="5" data-grid={{ w: 2, h: 3, x: 8, y: 0, autoSize: true, }}>
-            <span className="text">5</span>
-          </div>
+          {this.props.instruments.map((i, ix) => (
+              <div style={{width:'100%', fontSize: '10px',}} 
+                key={i.symbol} data-grid={{ w: 1, h: 10, x: 2*(ix+1), y: 0,  autoSize: true,  }}>
+                <DepthLadder symbol={i.symbol}></DepthLadder>
+              </div>
+          )) }
         </ReactGridLayout>
       </div>
     );
   }
 }
-const mapStateToProps = (state: RootState) => ({username: state.ws.hello.username});
+const mapStateToProps = (state: RootState) => ({
+    username: state.ws.hello.username,
+    instruments: state.exchange.instruments,
+});
 const dispatchProps = {};
 
 export const LocalStorageLayout = connect(mapStateToProps, dispatchProps)(LocalStorageLayout_);

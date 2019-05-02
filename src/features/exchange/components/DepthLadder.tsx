@@ -1,11 +1,13 @@
 import * as React from 'react';
-import { Depth } from 'MyModels';
+import { Ladder } from 'MyModels';
 import { connect } from 'react-redux';
 import { RootState } from 'MyTypes';
+import { wsSend } from '../../ws/actions';
 
 type Props = {
     symbol: string,
-    depth: Depth
+    ladder: Ladder,
+    submitOrder: typeof wsSend,
 }
 
 const fmtNum = (n: number): string => {
@@ -18,8 +20,7 @@ const fmtNum = (n: number): string => {
 
 
 const DepthLadder: React.FC<Props> = props => {
-    const {symbol, depth} = props
-    const ladder = depth[symbol] || [];
+    const {symbol, ladder, submitOrder} = props
     return (
     <div
         style={{
@@ -38,7 +39,16 @@ const DepthLadder: React.FC<Props> = props => {
             {ladder.map((item, ix) => (
                 <tr key={ix} style={{height: "12px", fontSize: "10px"}}> 
                     <td style={{textAlign:"right",}}>
-                        <button onClick={() => {console.log(`Buy @ ${item[1]} clicked`)}}
+                        <button onClick={() => {
+                            console.log(`Buy @ ${item[1]} clicked`)
+                            return submitOrder({
+                                command: 'order',
+                                symbol: symbol,
+                                is_buy: 1,
+                                quantity: 1,
+                                price: item[1],
+                            })
+                        }}
                             style={{
                                 height: '12px', width:'100%', backgroundColor:"palegreen",border:"0",
                                 fontSize: "10px",
@@ -56,7 +66,15 @@ const DepthLadder: React.FC<Props> = props => {
                         style={{textAlign:"right",}}
                         onClick={() => {console.log(`Sell clicked`)}}
                     >
-                    <button onClick={() => {console.log(`Sell @ ${item[1]} clicked`)}}
+                    <button onClick={() => {
+                            console.log(`Sell @ ${item[1]} clicked`);
+                            return submitOrder({
+                                command: 'order',
+                                symbol: symbol,
+                                is_buy: 0,
+                                quantity: 1,
+                                price: item[1],
+                            })}}
                         style={{height: '12px', width:'100%', backgroundColor:"salmon",border:"0",
                         fontSize: "10px"
                     }}
@@ -68,7 +86,7 @@ const DepthLadder: React.FC<Props> = props => {
     </div>
     )
 }
-const mapStateToProps = (state: RootState) => ({depth: state.ws.depth});
-const dispatchProps = {};
+const mapStateToProps = (state: RootState, ownProps: {symbol:string}) => ({ladder: state.ws.depth[ownProps.symbol]});
+const dispatchProps = {submitOrder: wsSend};
 
 export default connect(mapStateToProps, dispatchProps)(DepthLadder);

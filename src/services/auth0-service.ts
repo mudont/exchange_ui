@@ -1,7 +1,11 @@
 // @ts-nocheck
 import auth0, { Auth0DecodedHash, Auth0ParseHashError } from 'auth0-js';
-import { AUTH_CONFIG } from './auth0-variables';
 
+const AUTH_CONFIG = {
+  domain: process.env.REACT_APP_BASE_HREF || "donthireddy.auth0.com",
+  clientId: process.env.REACT_APP_CLIENT_ID || "ww9iFpPwyrNuNGfo8lG9v2MaaltXMqiU",
+  callbackUrl: process.env.REACT_APP_CALLBACK_URL || "http://ui.awani.org/callback",  
+}
 type RouteCb = () => void;
 export default class Auth {
   /** @type {any} */
@@ -107,6 +111,8 @@ export default class Auth {
 
     // Remove isLoggedIn flag from localStorage
     localStorage.removeItem('isLoggedIn');
+    localStorage.removeItem('idToken');
+    localStorage.removeItem('accessToken');
 
     this.auth0.logout({
       returnTo: window.location.origin

@@ -1,12 +1,12 @@
 const pathsMap = {
-  home: () => '/',
-  addArticle: () => '/add-article',
-  viewArticle: (articleId: string) => `/articles/${articleId}`,
-  editArticle: (articleId: string) => `/articles/${articleId}/edit`,
-  auth: () => '/auth',
-  auth_home: () => '/home',
-  callback: () => '/callback',
-  exchange: () => '/exchange',
+  home: () => process.env.REACT_APP_BASE_HREF + '/exchange',
+  addArticle: () => process.env.REACT_APP_BASE_HREF + '/add-article',
+  viewArticle: (articleId: string) => process.env.REACT_APP_BASE_HREF + `/articles/${articleId}`,
+  editArticle: (articleId: string) => process.env.REACT_APP_BASE_HREF + `/articles/${articleId}/edit`,
+  auth: () => process.env.REACT_APP_BASE_HREF + '/auth',
+  auth_home: () => process.env.REACT_APP_BASE_HREF + '/home',
+  callback: () => process.env.REACT_APP_BASE_HREF + '/callback',
+  exchange: () => process.env.REACT_APP_BASE_HREF + '/',
 };
 type PathsMap = typeof pathsMap;
 

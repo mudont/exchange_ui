@@ -35,8 +35,12 @@ export function updateArticle(article: Article): Promise<Article[]> {
 export function deleteArticle(article: Article): Promise<Article[]> {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      articles = articles.filter(i => i.id !== article.id);
-      resolve(articles);
+      if (Math.random() > 0.3) {
+        reject("Intentional Delete failure 70% of the time. Keep trying. It should work")
+      } else {
+        articles = articles.filter(i => i.id !== article.id);
+        resolve(articles);
+      }
     }, TIMEOUT);
   });
 }

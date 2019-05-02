@@ -1,6 +1,7 @@
 {
   "name": "react-redux-typescript-realworld-app",
   "description": "RealWorld App implementation based on \"react-redux-typescript-guide\"",
+  "homepage": ".",
   "version": "0.1.0",
   "private": true,
   "author": "Piotr Witek <piotrek.witek@gmail.com> (http://piotrwitek.github.io/)",
@@ -53,7 +54,7 @@
     "reselect": "4.0.0",
     "rxjs": "6.5.1",
     "tslib": "1.9.3",
-    "typesafe-actions": "4.1.2",
+    "typesafe-actions": "^4.2.0",
     "typescript": "3.4.5",
     "utility-types": "3.5.0",
     "yup": "0.27.0"
