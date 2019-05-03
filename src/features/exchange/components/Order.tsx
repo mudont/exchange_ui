@@ -4,8 +4,10 @@ import { Form, FormikProps, Field, withFormik, ErrorMessage } from 'formik';
 import { RootState, OrderFormValues } from 'MyTypes';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
+import Autocomplete from 'react-autocomplete'
 
 import { submitOrderAsync } from '../actions';
+import { Instrument } from 'MyModels';
 // import { getPath } from '../../../router-paths';
 
 
@@ -16,28 +18,45 @@ const dispatchProps = {
     }),
 
 };
-
+const buyColor = '#cefdce'
+const sellColor = '#fdd3ce'
+const menuStyle = {
+  borderRadius: '3px',
+  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+  background: 'rgba(255, 255, 255, 0.9)',
+  padding: '2px 0',
+  fontSize: '90%',
+  position: 'fixed' as any,
+  overflow: 'auto',
+  top: '50px',
+  //maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
+}
 type Props = typeof dispatchProps & {
-  order: OrderFormValues;
+  order: OrderFormValues,
+  instruments: Instrument[],
 };
 const LABEL_WIDTH = '100px'
 const label_style = {display: 'block', width: LABEL_WIDTH}
 
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
-  const { isSubmitting, order } = props;
+  const { isSubmitting, order, instruments, values, setFieldValue } = props;
+  const symbols = instruments.map(i => ({label: i.symbol}))
   return (
-    <div style={{backgroundColor: 'skyblue'}}>
-      <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? 'palegreen':'salmon'}}> Order </label>
+    <div style={{backgroundColor: '#d3edf8'}}>
+      <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> Order </label>
     <Form>
       <div>
         <label htmlFor="symbol" style={label_style}>Symbol</label>
-        <Field
-          name="symbol"
-          placeholder="Symbol"
-          component="input"
-          type="text"
-          required
-          autoFocus
+        <Autocomplete
+              getItemValue={(item) => item.label}
+              items={symbols}
+              renderItem={(item, isHighlighted) => <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>{item.label}</div>}
+              value={values.symbol}
+              onChange={(e) => setFieldValue('symbol', e.target.value)}
+              onSelect={(val) => setFieldValue('symbol', val)}
+              renderMenu={(items, value, style) => {
+                return <div style={{ ...style, ...menuStyle }} children={items}/>
+              }}
         />
         <ErrorMessage name="symbol" />
       </div>
@@ -120,6 +139,7 @@ export default compose(
     }),
     handleSubmit: (values, form) => {
       const cleanedValues = {...values, is_buy: (values.is_buy === "1" ? true : false)}
+
       form.props.submitOrder(cleanedValues);
       form.setSubmitting(false);
     },

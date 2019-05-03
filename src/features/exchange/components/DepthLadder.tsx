@@ -19,7 +19,8 @@ const fmtNum = (n: number): string => {
     }
 } 
 
-
+const buyColor = '#cefdce'
+const sellColor = '#fdd3ce'
 const DepthLadder: React.FC<Props> = props => {
     const {symbol, ladder, handleClick, currOrder} = props
     return (
@@ -32,9 +33,9 @@ const DepthLadder: React.FC<Props> = props => {
         <div style={{overflowX:'hidden', height:'100%', width:'118%'}}> 
         <table style={{width: "100%", height: "100%", overflowX:'hidden'}}>
             <colgroup>
-            <col style={{backgroundColor:"palegreen", width:"40%",}}/>
+            <col style={{backgroundColor:buyColor, width:"40%",}}/>
             <col style={{backgroundColor:"white", width:"20%"}}/>
-            <col style={{backgroundColor:"salmon", textAlign:"right", width:"40%"}}/>
+            <col style={{backgroundColor:sellColor, textAlign:"right", width:"40%"}}/>
             </colgroup>
             <tbody>
             {ladder.map((item, ix) => (
@@ -51,7 +52,7 @@ const DepthLadder: React.FC<Props> = props => {
                             })
                         }}
                             style={{
-                                height: '12px', width:'100%', backgroundColor:"palegreen",border:"0",
+                                height: '12px', width:'100%', backgroundColor:buyColor, border:"0",
                                 fontSize: "10px",
                                 // position: "absolute",
                                 // right: "0",
@@ -76,7 +77,7 @@ const DepthLadder: React.FC<Props> = props => {
                                 limit_price: item[1],
                                 max_show_size: currOrder.max_show_size,
                             })}}
-                        style={{height: '12px', width:'100%', backgroundColor:"salmon",border:"0",
+                        style={{height: '12px', width:'100%', backgroundColor:sellColor,border:"0",
                         fontSize: "10px"
                     }}
                     >{fmtNum(item[2])} </button> </td>
