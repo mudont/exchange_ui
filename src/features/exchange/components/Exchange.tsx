@@ -1,6 +1,7 @@
 import React from "react";
 import RGL, { WidthProvider, Layout } from "react-grid-layout";
 import DepthLadder from './DepthLadder';
+import Order from './Order'
 import FlexRow from '../../../components/FlexRow';
 import { connect } from 'react-redux';
 import { RootState } from 'MyTypes';
@@ -23,8 +24,8 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
     className: "layout",
     username: 'unknown',
     instruments: [],
-    cols: 12,
-    rowHeight: 30,
+    cols: 15,
+    rowHeight: 20,
     onLayoutChange: function() {}
   };
 
@@ -91,13 +92,13 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
           layout={this.state.layout}
           onLayoutChange={this.onLayoutChange}
         >
-          <div style={{backgroundColor: 'skyblue', width:'100%', fontSize: '10px'}} 
+          <div style={{fontSize:'12px'}} 
                 key="Order" data-grid={{ w: 2, h: 3, x: 0, y: 0, static: true, autoSize: true,}}>
-                <span className="text">Order</span>
+                <Order></Order>
           </div>
           {this.props.instruments.map((i, ix) => (
               <div style={{width:'100%', fontSize: '10px',}} 
-                key={i.symbol} data-grid={{ w: 1, h: 10, x: 2*(ix+1), y: 0,  autoSize: true,  }}>
+                key={i.symbol} data-grid={{ w: 1, h: 8, x: 2*(ix+1), y: 0,  autoSize: true,  }}>
                 <DepthLadder symbol={i.symbol}></DepthLadder>
               </div>
           )) }

@@ -8,9 +8,21 @@ import {
   createInstrumentAsync,
   updateInstrumentAsync,
   deleteInstrumentAsync,
+  submitOrderAsync,
 } from './actions';
+import {wsSend} from '../ws/actions'
 
-export const loadInstrumentsEpic: RootEpic = (action$, state$, { api }) =>
+export const submitOrderEpic: RootEpic = (action$, state$, { api }) =>
+  action$.pipe(
+    filter(isActionOf(submitOrderAsync.request)),
+    map((order) => {
+      return wsSend({
+        command: 'order',
+        ...order.payload
+      })
+    })
+  );// as Observable<any>;
+  export const loadInstrumentsEpic: RootEpic = (action$, state$, { api }) =>
   action$.pipe(
     filter(isActionOf(loadInstrumentsAsync.request)),
     switchMap(() =>

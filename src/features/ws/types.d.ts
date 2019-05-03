@@ -16,10 +16,11 @@ declare module 'MyModels' {
         trader: string;
         begin_time: string;
         is_buy: boolean;
-        quatity: number;
+        quantity: number;
+        limit_price: number;
         max_show_size: number;
-        filles_quantity: number;
-        satus: string;
+        filled_quantity: number;
+        status: string;
     };
     export type Trade = {
         _type: 'Trade';

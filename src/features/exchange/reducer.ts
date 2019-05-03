@@ -7,15 +7,23 @@ import {
   createInstrumentAsync,
   updateInstrumentAsync,
   deleteInstrumentAsync,
+  setCurrOrder,
 } from './actions';
 
 const reducer = combineReducers({
+  currOrder: createReducer({symbol:'IndWChampWC19', is_buy: true, quantity: 1, max_show_size:1, limit_price:0})
+  .handleAction([setCurrOrder], (state, action) => ({
+    ...state,
+    ...action.payload
+  })),
+
   isLoadingInstruments: createReducer(false as boolean)
     .handleAction([loadInstrumentsAsync.request], (state, action) => true)
     .handleAction(
       [loadInstrumentsAsync.success, loadInstrumentsAsync.failure],
       (state, action) => false
     ),
+  
   instruments: createReducer([] as Instrument[])
     .handleAction(
       [

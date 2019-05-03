@@ -1,13 +1,14 @@
 import * as React from 'react';
 import { Ladder } from 'MyModels';
 import { connect } from 'react-redux';
-import { RootState } from 'MyTypes';
-import { wsSend } from '../../ws/actions';
+import { RootState, OrderFormValues } from 'MyTypes';
+import { setCurrOrder } from '../actions';
 
 type Props = {
     symbol: string,
     ladder: Ladder,
-    submitOrder: typeof wsSend,
+    currOrder: OrderFormValues,
+    handleClick: typeof setCurrOrder,
 }
 
 const fmtNum = (n: number): string => {
@@ -20,16 +21,16 @@ const fmtNum = (n: number): string => {
 
 
 const DepthLadder: React.FC<Props> = props => {
-    const {symbol, ladder, submitOrder} = props
+    const {symbol, ladder, handleClick, currOrder} = props
     return (
     <div
         style={{
-            height:"100%", width: "100%", overflow: "hidden",
+            height:"100%", overflow: "hidden",
             // display:"flex", flexDirection: "column",
             }}>
         <label style={{fontWeight: 'bold'}}> {symbol}</label> <br></br>
-        <div>
-        <table style={{width: "100%", height: "100%",}}>
+        <div style={{overflowX:'hidden', height:'100%', width:'118%'}}> 
+        <table style={{width: "100%", height: "100%", overflowX:'hidden'}}>
             <colgroup>
             <col style={{backgroundColor:"palegreen", width:"40%",}}/>
             <col style={{backgroundColor:"white", width:"20%"}}/>
@@ -37,16 +38,16 @@ const DepthLadder: React.FC<Props> = props => {
             </colgroup>
             <tbody>
             {ladder.map((item, ix) => (
-                <tr key={ix} style={{height: "12px", fontSize: "10px"}}> 
+                <tr key={ix} style={{height: "10px", fontSize: "9px"}}> 
                     <td style={{textAlign:"right",}}>
                         <button onClick={() => {
                             console.log(`Buy @ ${item[1]} clicked`)
-                            return submitOrder({
-                                command: 'order',
+                            return handleClick({
                                 symbol: symbol,
-                                is_buy: 1,
-                                quantity: 1,
-                                price: item[1],
+                                is_buy: true,
+                                quantity: currOrder.quantity,
+                                limit_price: item[1],
+                                max_show_size: currOrder.max_show_size,
                             })
                         }}
                             style={{
@@ -68,12 +69,12 @@ const DepthLadder: React.FC<Props> = props => {
                     >
                     <button onClick={() => {
                             console.log(`Sell @ ${item[1]} clicked`);
-                            return submitOrder({
-                                command: 'order',
+                            return handleClick({
                                 symbol: symbol,
-                                is_buy: 0,
-                                quantity: 1,
-                                price: item[1],
+                                is_buy: false,
+                                quantity: currOrder.quantity,
+                                limit_price: item[1],
+                                max_show_size: currOrder.max_show_size,
                             })}}
                         style={{height: '12px', width:'100%', backgroundColor:"salmon",border:"0",
                         fontSize: "10px"
@@ -86,7 +87,10 @@ const DepthLadder: React.FC<Props> = props => {
     </div>
     )
 }
-const mapStateToProps = (state: RootState, ownProps: {symbol:string}) => ({ladder: state.ws.depth[ownProps.symbol]});
-const dispatchProps = {submitOrder: wsSend};
+const mapStateToProps = (state: RootState, ownProps: {symbol:string}) => ({
+    ladder: state.ws.depth[ownProps.symbol],
+    currOrder: state.exchange.currOrder,
+});
+const dispatchProps = {handleClick: setCurrOrder};
 
 export default connect(mapStateToProps, dispatchProps)(DepthLadder);
