@@ -3,7 +3,7 @@ import * as articles from './articles-api-client';
 import * as exchange from './exchange-api-client';
 import * as toast from './toast-service';
 import * as localStorage from './local-storage-service';
-import * as ws from './ws'
+import {ws} from './ws'
 
 export default {
   logger,
@@ -13,5 +13,5 @@ export default {
     articles,
     exchange,
   },
-  ws: ws.default(),
+  ws,
 };

@@ -42,15 +42,16 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
   const { isSubmitting, order, instruments, values, setFieldValue } = props;
   const symbols = instruments.map(i => ({label: i.symbol}))
   return (
-    <div style={{backgroundColor: '#d3edf8'}}>
+    <div style={{backgroundColor: '#d3edf8', overflow:'hidden', border: 1,}}>
       <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> Order </label>
     <Form>
       <div>
         <label htmlFor="symbol" style={label_style}>Symbol</label>
         <Autocomplete
+              key="symbol"
               getItemValue={(item) => item.label}
               items={symbols}
-              renderItem={(item, isHighlighted) => <div style={{ background: isHighlighted ? 'lightgray' : 'white' }}>{item.label}</div>}
+              renderItem={(item, isHighlighted) => <div key={item.label} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>{item.label}</div>}
               value={values.symbol}
               onChange={(e) => setFieldValue('symbol', e.target.value)}
               onSelect={(val) => setFieldValue('symbol', val)}
@@ -63,7 +64,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
 
       <div>
         {/* <label htmlFor="is_buy" style={label_style}>Buy?</label> */}
-        <Field component="select" name="is_buy">
+        <Field key="is_buy" component="select" name="is_buy">
           <option value="1">Buy</option>
           <option value="0">Sell</option>
         </Field>
@@ -74,6 +75,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
       <div>
         <label htmlFor="limit_price" style={label_style}>Price Limit</label>
         <Field
+          key="limit_price"
           name="limit_price"
           placeholder="LimitPrice"
           component="input"
@@ -87,6 +89,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
       <div>
         <label htmlFor="quantity" style={label_style}> Quantity</label>
         <Field
+          key="quantity"
           name="quantity"
           placeholder="Quantity"
           component="input"
@@ -100,6 +103,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
       <div>
         <label htmlFor="max_show_size" style={label_style}> Max Show</label>
         <Field
+          key="max_show_size"
           name="max_show_size"
           placeholder="MaxShowSize"
           component="input"
@@ -108,7 +112,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         />
         <ErrorMessage name="symbol" />
       </div>
-      <button type="submit" disabled={isSubmitting}>
+      <button key="submit" type="submit" disabled={isSubmitting}>
         Submit
       </button>
     </Form>

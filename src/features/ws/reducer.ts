@@ -1,4 +1,4 @@
-import { RootAction } from 'MyTypes';
+import { RootAction, MyOrder, MyPosition } from 'MyTypes';
 import { Trade, Order, Instrument, Depth, Hello } from 'MyModels';
 import { combineReducers } from 'redux';
 import { getType } from 'typesafe-actions';
@@ -9,18 +9,22 @@ import * as actions from './actions';
 
 export type SandboxState = Readonly<{
   hello: Hello,
-  instruments: ReadonlyArray<Instrument>;
-  trades: ReadonlyArray<Trade>;
-  orders: ReadonlyArray<Order>;
-  depth: Readonly<Depth>;
+  instruments: ReadonlyArray<Instrument>,
+  trades: ReadonlyArray<Trade>,
+  orders: ReadonlyArray<Order>,
+  depth: Readonly<Depth>,
+  my_orders: ReadonlyMap<number, MyOrder>,
+  my_positions: ReadonlyMap<string, MyPosition>,
 }>;
-
+const initHelloState: Hello = {_type: 'Hello', username: 'nobody', connected: false}
 export default combineReducers<SandboxState, RootAction>({
-  hello: (state={_type: 'Hello', username: 'nobody'}, action) => {
+  hello: (state=initHelloState, action) => {
     switch (action.type) {
       case getType(actions.wsReceive):
         if ('Hello' === action.payload._type) {
-            return action.payload;
+            return {...action.payload, connected: true};
+        } else if ('Close' === action.payload._type) {
+          return initHelloState;
         } else {
           return state;
         }
@@ -44,7 +48,7 @@ export default combineReducers<SandboxState, RootAction>({
     switch (action.type) {
       case getType(actions.wsReceive):
         if ('Trade' === action.payload._type) {
-          return [...state, action.payload];
+          return [action.payload, ...state, ];
         } else {
           return state;
         }
@@ -57,6 +61,34 @@ export default combineReducers<SandboxState, RootAction>({
       case getType(actions.wsReceive):
         if ('Order' === action.payload._type) {
           return [...state, action.payload];
+        } else {
+          return state;
+        }
+      default:
+        return state;
+    }
+  },
+
+  my_orders: (state=new Map<number, MyOrder>(), action) => {
+    switch (action.type) {
+      case getType(actions.wsReceive):
+        if ('my_orders' === action.payload._type) {
+          const data = action.payload as unknown as MyOrder
+          return {...state, [data.id]: data};
+        } else {
+          return state;
+        }
+      default:
+        return state;
+    }
+  },
+
+  my_positions: (state=new Map<string, MyPosition>(), action) => {
+    switch (action.type) {
+      case getType(actions.wsReceive):
+        if ('my_positions' === action.payload._type) {
+          const data = action.payload as unknown as MyPosition
+          return {...state, [data.symbol]: data};
         } else {
           return state;
         }

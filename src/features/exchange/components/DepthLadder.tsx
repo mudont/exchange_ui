@@ -3,9 +3,11 @@ import { Ladder } from 'MyModels';
 import { connect } from 'react-redux';
 import { RootState, OrderFormValues } from 'MyTypes';
 import { setCurrOrder } from '../actions';
+import ReactTooltip from 'react-tooltip'
 
 type Props = {
     symbol: string,
+    name: string,
     ladder: Ladder,
     currOrder: OrderFormValues,
     handleClick: typeof setCurrOrder,
@@ -22,14 +24,16 @@ const fmtNum = (n: number): string => {
 const buyColor = '#cefdce'
 const sellColor = '#fdd3ce'
 const DepthLadder: React.FC<Props> = props => {
-    const {symbol, ladder, handleClick, currOrder} = props
+    const {symbol, name, ladder, handleClick, currOrder} = props
+    const robustLadder: Ladder = ladder || []
     return (
     <div
         style={{
             height:"100%", overflow: "hidden",
             // display:"flex", flexDirection: "column",
             }}>
-        <label style={{fontWeight: 'bold'}}> {symbol}</label> <br></br>
+        <ReactTooltip />
+        <label style={{fontWeight: 'bold'}} data-tip={name}> {symbol}</label> <br></br>
         <div style={{overflowX:'hidden', height:'100%', width:'118%'}}> 
         <table style={{width: "100%", height: "100%", overflowX:'hidden'}}>
             <colgroup>
@@ -38,7 +42,7 @@ const DepthLadder: React.FC<Props> = props => {
             <col style={{backgroundColor:sellColor, textAlign:"right", width:"40%"}}/>
             </colgroup>
             <tbody>
-            {ladder.map((item, ix) => (
+            {robustLadder.map((item, ix) => (
                 <tr key={ix} style={{height: "10px", fontSize: "9px"}}> 
                     <td style={{textAlign:"right",}}>
                         <button onClick={() => {

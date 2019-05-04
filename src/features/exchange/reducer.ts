@@ -11,7 +11,8 @@ import {
 } from './actions';
 
 const reducer = combineReducers({
-  currOrder: createReducer({symbol:'IndWChampWC19', is_buy: true, quantity: 1, max_show_size:1, limit_price:0})
+  currOrder: createReducer({symbol:'IndWChampWC19', is_buy: true, quantity: 1, 
+                            max_show_size:1, limit_price:0})
   .handleAction([setCurrOrder], (state, action) => ({
     ...state,
     ...action.payload

@@ -1,7 +1,8 @@
 declare module 'MyModels' {
     export type Hello = {
-        _type: 'Hello';
-        username: string;
+        _type: 'Hello',
+        username: string,
+        connected: boolean,
     }
     export type Instrument = {
         _type: 'Instrument';
@@ -26,15 +27,23 @@ declare module 'MyModels' {
         _type: 'Trade';
         ts: string;
         symbol: string;
-        quantity: string;
-        price: string;
-        bs: string;
+        quantity: number;
+        price: number;
+        is_buy: boolean;
+    }
+    export type Error = {
+        _type: 'Error',
+        message: string,
+    }
+    export type Close = {
+        _type: 'Close',
+        message: string,
     }
     export type LadderItem = [number, number, number]
     export type Ladder = LadderItem[] 
     export interface Depth {
         [symbol: string]: Ladder
     }
-    export type WsObject = Hello | Instrument | Order | Trade | Depth;
+    export type WsObject = Hello | Instrument | Order | Trade | Depth | Error | Close;
   }
   
