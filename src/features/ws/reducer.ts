@@ -16,18 +16,38 @@ export type SandboxState = Readonly<{
   my_orders: ReadonlyMap<number, MyOrder>,
   my_positions: ReadonlyMap<string, MyPosition>,
 }>;
-const initHelloState: Hello = {_type: 'Hello', username: 'nobody', connected: false}
+const dfltSyms = new Set([])
+console.log(`hello Dflt syms: subs=${JSON.stringify(dfltSyms.values())}`)
+const initHelloState: Hello = {
+  _type: 'Hello',
+  username: 'nobody', 
+  connected: false,
+  subscribedSymbols: dfltSyms
+}
 export default combineReducers<SandboxState, RootAction>({
   hello: (state=initHelloState, action) => {
+    console.log(`hello reducer: subs=${JSON.stringify(state.subscribedSymbols.values())}`)
     switch (action.type) {
       case getType(actions.wsReceive):
         if ('Hello' === action.payload._type) {
-            return {...action.payload, connected: true};
+            return {...state, ...action.payload, connected: true};
         } else if ('Close' === action.payload._type) {
           return initHelloState;
+        } else if ('my_orders' === action.payload._type ||
+                   'my_positions' === action.payload._type
+          ) {
+            const row = action.payload as unknown as MyOrder|MyPosition
+            const sym = row.symbol
+            const syms = new Set([...Array.from(state.subscribedSymbols.values()), 
+              sym ])
+            return {...state, subscribedSymbols: syms}
         } else {
           return state;
         }
+      case getType(actions.subscribeSymbol):
+        const syms = new Set([...Array.from(state.subscribedSymbols.values()), 
+          action.payload ])
+        return {...state, subscribedSymbols: syms}
       default:
         return state;
     }

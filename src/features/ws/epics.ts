@@ -31,6 +31,7 @@ export const hydrateWsEpic: Epic<
     filter(action => action.payload._type === "Hello" || action.payload._type === "Order"),
     throttleTime(5*1000),
     tap(action => {
+      ws.send({command: "get_instruments"})
       ws.send({command: "get_my_orders"})
       ws.send({command: "get_my_positions"})
     }),

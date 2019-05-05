@@ -34,7 +34,7 @@ const DepthLadder: React.FC<Props> = props => {
             }}>
         <ReactTooltip />
         <label style={{fontWeight: 'bold'}} data-tip={name}> {symbol}</label> <br></br>
-        <div style={{overflowX:'hidden', height:'100%', width:'118%'}}> 
+        <div style={{overflowX:'hidden', height:'100%', width:'110%'}}> 
         <table style={{width: "100%", height: "100%", overflowX:'hidden'}}>
             <colgroup>
             <col style={{backgroundColor:buyColor, width:"40%",}}/>

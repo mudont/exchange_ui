@@ -1,23 +1,29 @@
 import React from 'react';
+import { Dispatch } from 'redux';
 import { Form, FormikProps, Field, withFormik, ErrorMessage } from 'formik';
 //import { Form, Radio /*, Input, Datepicker, Select, PhoneInput, Toggle, DropZone, Textarea, Checkbox, SubmitBtn, Button */} from 'react-formik-ui';
-import { RootState, OrderFormValues } from 'MyTypes';
+import { RootState, RootAction, OrderFormValues } from 'MyTypes';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Autocomplete from 'react-autocomplete'
 
 import { submitOrderAsync } from '../actions';
 import { Instrument } from 'MyModels';
+import { subscribeSymbol } from '../../ws/actions';
 // import { getPath } from '../../../router-paths';
 
 
-const dispatchProps = {
+const dispatchProps = (dispatch: Dispatch<RootAction>) => ({
   submitOrder: (values: OrderFormValues) =>
-    submitOrderAsync.request({
+    dispatch(submitOrderAsync.request({
       ...values,
-    }),
-
-};
+    })),
+  handleSymbolChange: (subAction: ReturnType<typeof subscribeSymbol>, 
+    formAction: any) => {
+    dispatch(subAction)
+    //dispatch(formAction)
+  },
+});
 const buyColor = '#cefdce'
 const sellColor = '#fdd3ce'
 const menuStyle = {
@@ -28,33 +34,39 @@ const menuStyle = {
   fontSize: '90%',
   position: 'fixed' as any,
   overflow: 'auto',
-  top: '50px',
+  top: '100px',
   //maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
 }
-type Props = typeof dispatchProps & {
+type Props = ReturnType<typeof dispatchProps> & {
   order: OrderFormValues,
-  instruments: Instrument[],
+  instruments: ReadonlyArray<Instrument>,
 };
 const LABEL_WIDTH = '100px'
 const label_style = {display: 'block', width: LABEL_WIDTH}
 
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
-  const { isSubmitting, order, instruments, values, setFieldValue } = props;
+  const { isSubmitting, order, instruments, values,
+    handleSymbolChange, setFieldValue } = props;
   const symbols = instruments.map(i => ({label: i.symbol}))
   return (
     <div style={{backgroundColor: '#d3edf8', overflow:'hidden', border: 1,}}>
       <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> Order </label>
     <Form>
       <div>
-        <label htmlFor="symbol" style={label_style}>Symbol</label>
+        <label htmlFor="symbol" style={label_style}>Event</label>
         <Autocomplete
               key="symbol"
               getItemValue={(item) => item.label}
               items={symbols}
               renderItem={(item, isHighlighted) => <div key={item.label} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>{item.label}</div>}
               value={values.symbol}
-              onChange={(e) => setFieldValue('symbol', e.target.value)}
-              onSelect={(val) => setFieldValue('symbol', val)}
+              onChange={(e) => handleSymbolChange(
+                subscribeSymbol(e.target.value),
+                setFieldValue('symbol', e.target.value))
+              }
+              onSelect={(val) => handleSymbolChange(
+                subscribeSymbol(val),
+                setFieldValue('symbol', val))}
               renderMenu={(items, value, style) => {
                 return <div style={{ ...style, ...menuStyle }} children={items}/>
               }}
@@ -122,7 +134,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
 
 const mapStateToProps = (state: RootState) => ({
   username: state.ws.hello.username,
-  instruments: state.exchange.instruments,
+  instruments: state.ws.instruments,
   order: state.exchange.currOrder,
 });
 

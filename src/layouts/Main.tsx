@@ -2,7 +2,8 @@ import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 
 import './Main.css';
-import logo from '../assets/logo.svg';
+//import logo from '../assets/logo.svg';
+import logo from '../assets/ICCWC.png';
 import FlexRow from '../components/FlexRow';
 
 type Props = {

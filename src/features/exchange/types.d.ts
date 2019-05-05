@@ -17,6 +17,7 @@ declare module 'MyTypes' {
     cost_basis: number,
     mkt_val: number,
     pnl: number,
+    crash_risk: number,
   }
   //{"_type":"my_orders","id":138,"instrument":"IndPakWC19","
   // order_time":"2019-05-03 00:28:27.034882+00:00",

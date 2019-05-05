@@ -11,8 +11,8 @@ import {
 } from './actions';
 
 const reducer = combineReducers({
-  currOrder: createReducer({symbol:'IndWChampWC19', is_buy: true, quantity: 1, 
-                            max_show_size:1, limit_price:0})
+  currOrder: createReducer({symbol:'', is_buy: true, quantity: 1, 
+                            max_show_size:25, limit_price:0})
   .handleAction([setCurrOrder], (state, action) => ({
     ...state,
     ...action.payload
@@ -25,7 +25,7 @@ const reducer = combineReducers({
       (state, action) => false
     ),
   
-  instruments: createReducer([] as Instrument[])
+  instruments: createReducer([] as ReadonlyArray<Instrument>)
     .handleAction(
       [
         loadInstrumentsAsync.success,

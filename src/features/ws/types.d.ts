@@ -3,6 +3,7 @@ declare module 'MyModels' {
         _type: 'Hello',
         username: string,
         connected: boolean,
+        subscribedSymbols: ReadonlySet<string>,
     }
     export type Instrument = {
         _type: 'Instrument';
@@ -26,7 +27,7 @@ declare module 'MyModels' {
     export type Trade = {
         _type: 'Trade';
         ts: string;
-        symbol: string;
+        symbol: string; 
         quantity: number;
         price: number;
         is_buy: boolean;
