@@ -13,6 +13,9 @@ import TopBar from './TopBar'
 import Ticks from './Ticks'
 import { wsSend } from '../../ws/actions';
 import * as R from 'ramda'
+import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
+import "react-tabs/style/react-tabs.css";
+import Help from './Help';
 
 const ReactGridLayout = WidthProvider(Responsive);
 const originalLayout = getFromLS("layout") || [];
@@ -82,50 +85,58 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
                  auth={this.props.auth}
                  connected={this.props.connected}
                  username={this.props.username}/>
-        <FlexBox>{/*style={{direction:'ltr', display:'table-row', width:'600px'}}>*/}
-            <div style={{fontSize:'12px', height: '200px', border:'1px solid black'}} 
-                data-grid={{ w:3, h:8, x: 0, y: 0,  static: true,}}
-                        key="Order">
-                        <Order/>
-            </div>
+        <Tabs> 
+            <TabList> 
+                <Tab> Exchange </Tab>
+                <Tab> Help </Tab>
+            </TabList>
+            <TabPanel>
+                <FlexBox>{/*style={{direction:'ltr', display:'table-row', width:'600px'}}>*/}
+                    <div style={{fontSize:'12px', height: '200px', border:'1px solid black'}} 
+                        data-grid={{ w:3, h:8, x: 0, y: 0,  static: true,}}
+                                key="Order">
+                                <Order/>
+                    </div>
 
-            <ReactGridLayout
-                style={{/*backgroundImage, minHeight*/ width: '100%'}}
-                {...this.props}
-                layouts={layouts}
-                breakpoints={breakpoints}
-                cols={cols}
-                onLayoutChange={this.onLayoutChange}
-            >
+                    <ReactGridLayout
+                        style={{/*backgroundImage, minHeight*/ width: '100%'}}
+                        {...this.props}
+                        layouts={layouts}
+                        breakpoints={breakpoints}
+                        cols={cols}
+                        onLayoutChange={this.onLayoutChange}
+                    >
 
-            <div style={{border:'1px solid black'}}
-                key="MyOrders" data-grid={{ w: 20, h: 8, x: 0, y: 0, autoSize: true,}}>
-                <MyOrders/>
-            </div>
-            <div style={{border:'1px solid black'}}
-                key="MyPositions" data-grid={{ w: 18, h: 8, x: 0, y: 15, autoSize: true,}}>
-                <MyPositions/>
-            </div>
+                    <div style={{border:'1px solid black'}}
+                        key="MyOrders" data-grid={{ w: 20, h: 8, x: 0, y: 0, autoSize: true,}}>
+                        <MyOrders/>
+                    </div>
+                    <div style={{border:'1px solid black'}}
+                        key="MyPositions" data-grid={{ w: 18, h: 8, x: 0, y: 15, autoSize: true,}}>
+                        <MyPositions/>
+                    </div>
 
-            <div style={{border:'1px solid black'}}
-                key="Ticks" data-grid={{ w: 24, h: 8, x: 0, y: 25, autoSize: true,}}>
-                <Ticks/>
-            </div>
-            {this.props.instruments.filter(
-                (i,ix) => this.props.subscribedSymbols && this.props.subscribedSymbols.has(i.symbol)
-            ).map((i, ix) => (
-                <div style={{width:'100%', fontSize: '10px',border:'1px solid black',}} 
-                    key={i.symbol} data-grid={{ minWidth:3, minHeight:8,
-                       w: 3, h: 8, x: 3*ix, y: 40,  autoSize: true,  }}>
-                    <DepthLadder symbol={i.symbol} name={i.name}></DepthLadder>
-                </div>
-            )) }
-                
-        </ReactGridLayout>
-            
-
-
-        </FlexBox>
+                    <div style={{border:'1px solid black'}}
+                        key="Ticks" data-grid={{ w: 24, h: 8, x: 0, y: 25, autoSize: true,}}>
+                        <Ticks/>
+                    </div>
+                    {this.props.instruments.filter(
+                        (i,ix) => this.props.subscribedSymbols && this.props.subscribedSymbols.has(i.symbol)
+                    ).map((i, ix) => (
+                        <div style={{width:'100%', fontSize: '10px',border:'1px solid black',}} 
+                            key={i.symbol} data-grid={{ minWidth:3, minHeight:8,
+                            w: 3, h: 8, x: 3*ix, y: 40,  autoSize: true,  }}>
+                            <DepthLadder symbol={i.symbol} name={i.name}></DepthLadder>
+                        </div>
+                    )) }
+                        
+                </ReactGridLayout>
+                </FlexBox>
+            </TabPanel>
+            <TabPanel>
+                <Help/> 
+            </TabPanel>
+        </Tabs>
       </div>
     );
   }

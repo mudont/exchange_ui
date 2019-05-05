@@ -1,3 +1,27 @@
+## UI features
+  - Credit Limit Check
+  - Self match prevention
+  - Errors should be shown to users
+  - [x] my orders
+  - my trades
+  - [x] Generic Feed Window
+  - Top bar:
+    - [x] name
+    - pic?
+    - [x] login/logout
+    - [x] WebSocket state
+    - [x] WS connect
+  - [x] instruments
+  - [x] my positons/pnl
+  - [x] depth quotes for subscribed instruments
+  - Leaderboard: Top p&l, volume trading, market making
+  - prettify with CSS etc.
+  - Create/Manage groups and instruments for private instruments
+
+- [x] Order commands by API or WebSocket
+
+- [x] Order form 
+
 ## Infra
 
 ### Server infra
@@ -13,7 +37,7 @@
 ### UI infra
 
 - [ ] WS connect should happen after authentication
-- [ ] Instrument subscription
+- [x] Instrument subscription
 - [x] Deploy as static files? 
 - [x] REST API client
 
@@ -27,26 +51,4 @@
 - Use Toolbox pattern to add depth ladders and Orders/Trades/Positions. Add and close windows.
 - React Autosuggest plus fuzzyset.js  for finding instruments
 - [x] Formik Forms
-
-## UI features
-  - my orders
-  - my trades
-  - Generic Feed Window
-  - Top bar:
-    - [x] name
-    - pic?
-    - [x] login/logout
-    - WebSocket state
-    - WS connect
-  - [x] instruments
-  - my positons/pnl
-  - depth quotes for subscribed instruments
-  - Leaderboard: Top p&l, volume trading, market making
-  - prettify with CSS etc.
-  - Create/Manage groups and instruments for private instruments
-
-- Order commands by API or WebSocket
-
-- [x] Order form 
-
 
