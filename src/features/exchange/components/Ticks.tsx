@@ -17,7 +17,7 @@ const Tbl: React.FC<Props> = (props) => {
      }, {
       Header: 'Event',
       accessor: 'symbol', 
-      width: 125,
+      width: 100,
      }, {
       id: 'price', 
       Header: 'Price',

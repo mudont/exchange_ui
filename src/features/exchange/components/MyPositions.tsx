@@ -15,7 +15,7 @@ const Tbl: React.FC<Props> = (props) => {
     const data = Object.values(props.my_positions)
     const columns = [{
       Header: 'Event',
-      width:125,
+      width:100,
       accessor: 'symbol' // String-based value accessors!
      }, {
       id: 'price', // Required because our accessor is not a string

@@ -134,7 +134,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
 
 const mapStateToProps = (state: RootState) => ({
   username: state.ws.hello.username,
-  instruments: state.ws.instruments,
+  instruments: Object.values(state.ws.instruments),
   order: state.exchange.currOrder,
 });
 

@@ -9,7 +9,7 @@ import * as actions from './actions';
 
 export type SandboxState = Readonly<{
   hello: Hello,
-  instruments: ReadonlyArray<Instrument>,
+  instruments: ReadonlyMap<string, Instrument>,
   trades: ReadonlyArray<Trade>,
   orders: ReadonlyArray<Order>,
   depth: Readonly<Depth>,
@@ -17,7 +17,7 @@ export type SandboxState = Readonly<{
   my_positions: ReadonlyMap<string, MyPosition>,
 }>;
 const dfltSyms = new Set([])
-console.log(`hello Dflt syms: subs=${JSON.stringify(dfltSyms.values())}`)
+//console.log(`hello Dflt syms: subs=${JSON.stringify(dfltSyms.values())}`)
 const initHelloState: Hello = {
   _type: 'Hello',
   username: 'nobody', 
@@ -26,7 +26,7 @@ const initHelloState: Hello = {
 }
 export default combineReducers<SandboxState, RootAction>({
   hello: (state=initHelloState, action) => {
-    console.log(`hello reducer: subs=${JSON.stringify(state.subscribedSymbols.values())}`)
+    //console.log(`hello reducer: subs=${JSON.stringify(state.subscribedSymbols.values())}`)
     switch (action.type) {
       case getType(actions.wsReceive):
         if ('Hello' === action.payload._type) {
@@ -52,18 +52,6 @@ export default combineReducers<SandboxState, RootAction>({
         return state;
     }
   },
-  instruments: (state=[], action) => {
-    switch (action.type) {
-      case getType(actions.wsReceive):
-        if ('Instrument' === action.payload._type) {
-            return [...state, action.payload];
-        } else {
-          return state;
-        }
-      default:
-        return state;
-    }
-  },
   trades: (state=[], action) => {
     switch (action.type) {
       case getType(actions.wsReceive):
@@ -81,6 +69,19 @@ export default combineReducers<SandboxState, RootAction>({
       case getType(actions.wsReceive):
         if ('Order' === action.payload._type) {
           return [...state, action.payload];
+        } else {
+          return state;
+        }
+      default:
+        return state;
+    }
+  },
+  instruments: (state=new Map<string, Instrument>(), action) => {
+    switch (action.type) {
+      case getType(actions.wsReceive):
+        if ('Instrument' === action.payload._type) {
+          const data = action.payload as unknown as Instrument
+            return {...state, [data.symbol]: data};
         } else {
           return state;
         }

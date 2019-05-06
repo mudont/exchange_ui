@@ -71,8 +71,8 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
   render() {
     const { isAuthenticated } = this.props.auth;
     const layout = this.state.layout
-    const cols = {xlg: 72, lg: 48, md: 40, sm: 24, xs: 16, xxs: 8}
-    const breakpoints = {xlg:2400, lg: 2000, md: 1200, sm: 800, xs: 400, xxs: 0}
+    const cols = {xlg: 72, lg: 48, mmd: 40, md: 32, sm: 24, xs: 16, xxs: 8}
+    const breakpoints = {xlg:2400, lg: 2000, mmd: 1600, md: 1200, sm: 800, xs: 400, xxs: 0}
     const widthTags = Object.keys(breakpoints)
     const nWidths = widthTags.length
     // For now, same layout for every breakpoint
@@ -108,16 +108,16 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
                     >
 
                     <div style={{border:'1px solid black'}}
-                        key="MyOrders" data-grid={{ w: 20, h: 8, x: 0, y: 0, autoSize: true,}}>
+                        key="MyOrders" data-grid={{ w: 11, h: 8, x: 0, y: 0, autoSize: true,}}>
                         <MyOrders/>
                     </div>
                     <div style={{border:'1px solid black'}}
-                        key="MyPositions" data-grid={{ w: 18, h: 8, x: 0, y: 15, autoSize: true,}}>
+                        key="MyPositions" data-grid={{ w: 11, h: 8, x: 0, y: 15, autoSize: true,}}>
                         <MyPositions/>
                     </div>
 
                     <div style={{border:'1px solid black'}}
-                        key="Ticks" data-grid={{ w: 24, h: 8, x: 0, y: 25, autoSize: true,}}>
+                        key="Ticks" data-grid={{ w: 11, h: 8, x: 0, y: 25, autoSize: true,}}>
                         <Ticks/>
                     </div>
                     {this.props.instruments.filter(
@@ -142,11 +142,11 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
   }
 }
 const mapStateToProps = (state: RootState) => { 
-    console.log(`sub: ${JSON.stringify(state.ws.hello.subscribedSymbols.values())}`)
+    //console.log(`sub: ${JSON.stringify(state.ws.hello.subscribedSymbols.values())}`)
     return ({
         username: state.ws.hello.username,
         connected: state.ws.hello.connected,
-        instruments: state.ws.instruments,
+        instruments: Object.values(state.ws.instruments),
         subscribedSymbols: state.ws.hello.subscribedSymbols,
     });
 }

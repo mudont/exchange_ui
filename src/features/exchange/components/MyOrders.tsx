@@ -23,7 +23,7 @@ const Tbl: React.FC<Props> = (props) => {
     }, {
       Header: 'Event',
       accessor: 'symbol',
-      width: 125,
+      width: 100,
     }, {
       id: 'limit_price', // Required because our accessor is not a string
       Header: () => <RA> Price </RA>,

@@ -10,7 +10,7 @@ const TIMEOUT = 750;
 export function loadInstruments(): Promise<Instrument[]> {
   return new Promise((resolve, reject) => {
     const proxyurl = "https://cors-anywhere.herokuapp.com/";
-    console.log(`Getting instruments from ${process.env.REACT_APP_API_SERVER_URL}.`)
+    //console.log(`Getting instruments from ${process.env.REACT_APP_API_SERVER_URL}.`)
     axios.get(proxyurl + process.env.REACT_APP_API_SERVER_URL + 'exchange/get_instruments/', {
         headers: {
           'Access-Control-Allow-Origin': '*',
@@ -18,11 +18,11 @@ export function loadInstruments(): Promise<Instrument[]> {
     })
       .then((response) => {
         const data = response.data as unknown as {symbol:string, name: string}[]
-        console.log(` Instrument data: ${JSON.stringify(data, null, 4)}`)
+        //console.log(` Instrument data: ${JSON.stringify(data, null, 4)}`)
         return resolve(data.map(i => ({_type: 'Instrument', ...i})))
       })
       .catch(error => {
-        console.error(`Error getting instruments: ${error}`)
+        //console.error(`Error getting instruments: ${error}`)
         return reject(error)
       })
   });
