@@ -7,17 +7,18 @@ import { compose } from 'redux';
 import { connect } from 'react-redux';
 import Autocomplete from 'react-autocomplete'
 
-import { submitOrderAsync } from '../actions';
+import { submitOrderAsync, setCurrOrder } from '../actions';
 import { Instrument } from 'MyModels';
 import { subscribeSymbol } from '../../ws/actions';
 // import { getPath } from '../../../router-paths';
 
 
 const dispatchProps = (dispatch: Dispatch<RootAction>) => ({
-  submitOrder: (values: OrderFormValues) =>
+  submitOrder: (values: OrderFormValues) => {
+    dispatch(setCurrOrder(values))
     dispatch(submitOrderAsync.request({
       ...values,
-    })),
+    }))},
   handleSymbolChange: (subAction: ReturnType<typeof subscribeSymbol>, 
     formAction: any) => {
     dispatch(subAction)
@@ -46,11 +47,11 @@ const label_style = {display: 'block', width: LABEL_WIDTH}
 
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
   const { isSubmitting, order, instruments, values,
-    handleSymbolChange, setFieldValue } = props;
+    handleSymbolChange, setFieldValue, } = props;
   const symbols = instruments.map(i => ({label: i.symbol}))
   return (
     <div style={{backgroundColor: '#d3edf8', overflow:'hidden', border: 1,}}>
-      <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> Order </label>
+      <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> Place Bet </label>
     <Form>
       <div>
         <label htmlFor="symbol" style={label_style}>Event</label>
@@ -60,13 +61,21 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
               items={symbols}
               renderItem={(item, isHighlighted) => <div key={item.label} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>{item.label}</div>}
               value={values.symbol}
-              onChange={(e) => handleSymbolChange(
-                subscribeSymbol(e.target.value),
-                setFieldValue('symbol', e.target.value))
+              onChange={(e) => {
+
+                 console.log(`DEBUG subing ${e.target.value}`)
+                 return handleSymbolChange(
+                 subscribeSymbol(e.target.value),
+                 setFieldValue('symbol', e.target.value))
+                }
               }
-              onSelect={(val) => handleSymbolChange(
-                subscribeSymbol(val),
-                setFieldValue('symbol', val))}
+              onSelect={(val) => {
+                console.log(`DEBUG subing ${val}`)
+                return handleSymbolChange(
+                  subscribeSymbol(val),
+                  setFieldValue('symbol', val))
+                }
+              }
               renderMenu={(items, value, style) => {
                 return <div style={{ ...style, ...menuStyle }} children={items}/>
               }}

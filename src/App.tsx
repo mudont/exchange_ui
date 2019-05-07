@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Provider } from 'react-redux';
 import { ConnectedRouter, push } from 'connected-react-router';
 import { Switch, Route } from 'react-router';
@@ -15,7 +15,13 @@ import {Callback} from './features/auth0/components/Callback';
 // import {App as AuthApp} from './features/auth0/components/App';
 import Auth from './services/auth0-service';
 import {LocalStorageLayout as Exchange} from './features/exchange/components/Exchange';
-const auth = new Auth(() => store.dispatch(push(getPath("exchange"))));
+import { wsSend } from './features/ws/actions';
+
+const auth = new Auth(() => {
+  // Force a reconnect after login
+  store.dispatch(wsSend({command:'Hello'}))
+  store.dispatch(push(getPath("exchange")))
+});
 //type AuthProps = {location: Location}
 const handleAuthentication = ({location}: any) => {
   if (/access_token|id_token|error/.test(location.hash)) {
@@ -24,8 +30,8 @@ const handleAuthentication = ({location}: any) => {
 }
 // End Auth stuff
 
-class App extends Component {
-  render() {
+const App: React.FC<{}> = (props) => {
+
     return (
       <Provider store={store}>
         <ConnectedRouter history={history}>
@@ -56,7 +62,6 @@ class App extends Component {
         </ConnectedRouter>
       </Provider>
     );
-  }
 }
 
 export default App;

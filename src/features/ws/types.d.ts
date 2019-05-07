@@ -2,8 +2,10 @@ declare module 'MyModels' {
     export type Hello = {
         _type: 'Hello',
         username: string,
+        credit_limit: number,
         connected: boolean,
         subscribedSymbols: ReadonlySet<string>,
+        unsubscribedSymbols: ReadonlySet<string>,
     }
     export type Instrument = {
         _type: 'Instrument';

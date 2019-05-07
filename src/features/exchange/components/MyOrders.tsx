@@ -36,6 +36,11 @@ const Tbl: React.FC<Props> = (props) => {
       width: 40,
       Cell: (props:{value:number}) => <RA>{props.value}</RA>
     }, {
+      Header: () => 'B/S', // Custom header components!
+      accessor: 'is_buy',
+      width: 35,
+      Cell: (props:{value:boolean}) => <div>{props.value ? 'BUY':'SELL'}</div>
+    }, {
         Header: () => <RA>Fills</RA>, // Custom header components!
         accessor: 'filled_quantity',
         width: 40,

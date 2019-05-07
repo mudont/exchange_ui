@@ -7,12 +7,13 @@ import logo from '../../../assets/ICCWC.png'
 type Props = {
     isAuthenticated: () => boolean,
     username: string,
+    credit_limit: number,
     connected: boolean,
     auth: Auth,
     reconnect: typeof wsSend,
 }
 const TopBar: React.FC<Props> = (props) => {
-    const {isAuthenticated, username, connected, auth, reconnect} = props
+    const {isAuthenticated, username, credit_limit, connected, auth, reconnect} = props
     const bg = (isAuthenticated() && username !== 'nobody')? 'lightsteelblue' : 'red'
     return (<FlexRow style={{backgroundColor: bg}}>
         <img src={logo}  alt="logo" width="25" height="35"/>
@@ -20,7 +21,7 @@ const TopBar: React.FC<Props> = (props) => {
         {
         isAuthenticated() && (
             <div>
-                {username !== 'nobody' && ("Hello " + username)}
+                {username !== 'nobody' && (`Hello ${username}. Your credit limit is ${(credit_limit||0).toFixed(2)}`)}
                 <button style={{ cursor: 'pointer' }}
                     onClick={auth.logout.bind(auth)}>
                 Log Out

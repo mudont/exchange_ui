@@ -3,6 +3,7 @@ declare module 'MyTypes' {
   export type MyOrder = {
     id: number,
     symbol: string,
+    is_buy: boolean,
     limit_price: number,
     order_time: string,
     quantity: number,

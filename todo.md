@@ -1,6 +1,22 @@
+## Bug
+  - [x] crash pnl is wrong
+  - [x] My Orders have no buy/sell
+  - [x] Order quantity should not be changed when clicking on depth ladder
+
+## Joshua comments
+  - [x] Login should be more convenient
+  - [ ] Checkbox to show Odds rather than Probabilities
+  - [ ] Table row height should stay fixed on expand
+  - [ ] Order expiration options
+  - [ ] Eg: expire orders a beginning of event
+  - [ ] Wants to show the Help  page first time, then have a Don't show again flag
+
+
 ## UI features
   - Credit Limit Check
+  - Leaderboard: Top p&l, volume trading, market making
   - Self match prevention
+  - Help text below the order dialog
   - Errors should be shown to users
   - [x] my orders
   - my trades
@@ -14,7 +30,6 @@
   - [x] instruments
   - [x] my positons/pnl
   - [x] depth quotes for subscribed instruments
-  - Leaderboard: Top p&l, volume trading, market making
   - prettify with CSS etc.
   - Create/Manage groups and instruments for private instruments
 

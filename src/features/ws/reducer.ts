@@ -16,18 +16,20 @@ export type SandboxState = Readonly<{
   my_orders: ReadonlyMap<number, MyOrder>,
   my_positions: ReadonlyMap<string, MyPosition>,
 }>;
-const dfltSyms = new Set([])
 //console.log(`hello Dflt syms: subs=${JSON.stringify(dfltSyms.values())}`)
 const initHelloState: Hello = {
   _type: 'Hello',
   username: 'nobody', 
+  credit_limit: 0,
   connected: false,
-  subscribedSymbols: dfltSyms
+  subscribedSymbols: new Set([]),
+  unsubscribedSymbols: new Set([]),
 }
 export default combineReducers<SandboxState, RootAction>({
   hello: (state=initHelloState, action) => {
     //console.log(`hello reducer: subs=${JSON.stringify(state.subscribedSymbols.values())}`)
     switch (action.type) {
+
       case getType(actions.wsReceive):
         if ('Hello' === action.payload._type) {
             return {...state, ...action.payload, connected: true};
@@ -44,10 +46,27 @@ export default combineReducers<SandboxState, RootAction>({
         } else {
           return state;
         }
+
       case getType(actions.subscribeSymbol):
-        const syms = new Set([...Array.from(state.subscribedSymbols.values()), 
-          action.payload ])
-        return {...state, subscribedSymbols: syms}
+        const arr = [...Array.from(state.subscribedSymbols.values()), 
+          action.payload ]
+        const syms = new Set(arr)
+          //console.log(`DEBUG0 pl:${action.payload} sub: ${JSON.stringify(Array.from(syms.values()))}`)
+        const unwanted1 = new Set(
+          [...Array.from(state.unsubscribedSymbols.values())
+            .filter(sym => sym !== action.payload )])
+        //console.log(`DEBUG1 pl:${action.payload} ` + 
+        //  ` has: ${syms.has('Eng > Pak')}` +
+         // `sub: ${JSON.stringify(Array.from(unwanted1.values()))}`)
+        return {...state, subscribedSymbols: syms, unsubscribedSymbols: unwanted1}
+
+      case getType(actions.unsubscribeSymbol):
+        const syms2 = new Set([...Array.from(state.unsubscribedSymbols.values()),
+           action.payload])
+        //console.log(`DEBUG2 ${action.payload } unsub: ${JSON.stringify(syms2)}`)
+
+        return {...state, unsubscribedSymbols: syms2}
+
       default:
         return state;
     }

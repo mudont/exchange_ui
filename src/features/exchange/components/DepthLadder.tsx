@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { RootState, OrderFormValues } from 'MyTypes';
 import { setCurrOrder } from '../actions';
 import ReactTooltip from 'react-tooltip'
+import { unsubscribeSymbol } from '../../ws/actions';
 
 type Props = {
     symbol: string,
@@ -11,6 +12,7 @@ type Props = {
     ladder: Ladder,
     currOrder: OrderFormValues,
     handleClick: typeof setCurrOrder,
+    unsubscribeSymbol: typeof unsubscribeSymbol,
 }
 
 const fmtNum = (n: number): string => {
@@ -24,7 +26,7 @@ const fmtNum = (n: number): string => {
 const buyColor = '#cefdce'
 const sellColor = '#fdd3ce'
 const DepthLadder: React.FC<Props> = props => {
-    const {symbol, name, ladder, handleClick, currOrder} = props
+    const {symbol, name, ladder, handleClick, currOrder, unsubscribeSymbol} = props
     const robustLadder: Ladder = ladder || []
     return (
     <div
@@ -33,7 +35,11 @@ const DepthLadder: React.FC<Props> = props => {
             // display:"flex", flexDirection: "column",
             }}>
         <ReactTooltip />
-        <label style={{fontWeight: 'bold'}} data-tip={name}> {symbol}</label> <br></br>
+        <div style={{position:'relative'}}>
+            <label style={{fontWeight: 'bold', float:'left',}} data-tip={name}> {symbol}</label> 
+            <span style={{float: 'right',color:'red',cursor: 'pointer'}} onClick={() => unsubscribeSymbol(symbol)}> X</span>
+        </div>
+        <br></br>
         <div style={{overflowX:'hidden', height:'100%', width:'110%'}}> 
         <table style={{width: "100%", height: "100%", overflowX:'hidden'}}>
             <colgroup>
@@ -96,6 +102,9 @@ const mapStateToProps = (state: RootState, ownProps: {symbol:string}) => ({
     ladder: state.ws.depth[ownProps.symbol],
     currOrder: state.exchange.currOrder,
 });
-const dispatchProps = {handleClick: setCurrOrder};
+const dispatchProps = {
+    handleClick: setCurrOrder,
+    unsubscribeSymbol: unsubscribeSymbol,
+};
 
 export default connect(mapStateToProps, dispatchProps)(DepthLadder);
