@@ -12,11 +12,12 @@ import Auth from '../../../services/auth0-service';
 import { Instrument } from 'MyModels';
 import TopBar from './TopBar'
 import Ticks from './Ticks'
-import { wsSend } from '../../ws/actions';
+import { wsSend, wsClearBranch } from '../../ws/actions';
 import * as R from 'ramda'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import "react-tabs/style/react-tabs.css";
 import Help from './Help';
+import Leaderboard from './Leaderboard'
 
 const ReactGridLayout = WidthProvider(Responsive);
 const originalLayout = getFromLS("layout") || [];
@@ -30,6 +31,7 @@ interface MyProps {
     subscribedSymbols: ReadonlySet<string>,
     unsubscribedSymbols: ReadonlySet<string>,
     wsSend: typeof wsSend,
+    wsClearBranch: typeof wsClearBranch,
  }
 /**
  * This layout demonstrates how to sync to localstorage.
@@ -90,9 +92,18 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
                  connected={this.props.connected}
                  credit_limit={this.props.credit_limit}
                  username={this.props.username}/>
-        <Tabs> 
+        <Tabs
+            onSelect= {(index: number) => {
+                if (index === 1) {
+                    this.props.wsClearBranch("leaderboard")
+                    this.props.wsSend({command: 'get_leaderboard'})
+                }
+                return true
+            }}
+        > 
             <TabList> 
                 <Tab> Exchange </Tab>
+                <Tab> Leaderboard </Tab>
                 <Tab> Help </Tab>
             </TabList>
             <TabPanel>
@@ -103,7 +114,7 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
                                 key="Order">
                                 <Order/>
                     </div>
-                    <div style={{ width: '150px'}}> Click on the Event field above and choose an event to get started</div>
+                    {/* <div style={{ width: '150px'}}> Click on the Event field above and choose an event to get started</div> */}
                   </FlexColumn>
                     <ReactGridLayout
                         style={{/*backgroundImage, minHeight*/ width: '100%'}}
@@ -145,6 +156,9 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
                 </FlexRow>
             </TabPanel>
             <TabPanel>
+                <Leaderboard/> 
+            </TabPanel>
+            <TabPanel>
                 <Help/> 
             </TabPanel>
         </Tabs>
@@ -164,7 +178,8 @@ const mapStateToProps = (state: RootState) => {
     });
 }
 const dispatchProps = {
-    wsSend: wsSend
+    wsSend: wsSend,
+    wsClearBranch: wsClearBranch,
 };
 
 export const LocalStorageLayout = connect(mapStateToProps, dispatchProps)(LocalStorageLayout_);

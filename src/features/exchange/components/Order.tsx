@@ -5,11 +5,12 @@ import { Form, FormikProps, Field, withFormik, ErrorMessage } from 'formik';
 import { RootState, RootAction, OrderFormValues } from 'MyTypes';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
-import Autocomplete from 'react-autocomplete'
+// import Autocomplete from 'react-autocomplete'
 
 import { submitOrderAsync, setCurrOrder } from '../actions';
 import { Instrument } from 'MyModels';
 import { subscribeSymbol } from '../../ws/actions';
+import {FuzzyChooser} from './FuzzyChooser'
 // import { getPath } from '../../../router-paths';
 
 
@@ -27,17 +28,17 @@ const dispatchProps = (dispatch: Dispatch<RootAction>) => ({
 });
 const buyColor = '#cefdce'
 const sellColor = '#fdd3ce'
-const menuStyle = {
-  borderRadius: '3px',
-  boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-  background: 'rgba(255, 255, 255, 0.9)',
-  padding: '2px 0',
-  fontSize: '90%',
-  position: 'fixed' as any,
-  overflow: 'auto',
-  top: '100px',
-  //maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
-}
+// const menuStyle = {
+//   borderRadius: '3px',
+//   boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+//   background: 'rgba(255, 255, 255, 0.9)',
+//   padding: '2px 0',
+//   fontSize: '90%',
+//   position: 'fixed' as any,
+//   overflow: 'auto',
+//   top: '100px',
+//   //maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
+// }
 type Props = ReturnType<typeof dispatchProps> & {
   order: OrderFormValues,
   instruments: ReadonlyArray<Instrument>,
@@ -48,14 +49,26 @@ const label_style = {display: 'block', width: LABEL_WIDTH}
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
   const { isSubmitting, order, instruments, values,
     handleSymbolChange, setFieldValue, } = props;
-  const symbols = instruments.map(i => ({label: i.symbol}))
+  //const symbols = instruments.map(i => ({label: i.symbol}))
   return (
     <div style={{backgroundColor: '#d3edf8', overflow:'hidden', border: 1,}}>
       <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> Place Bet </label>
     <Form>
       <div>
         <label htmlFor="symbol" style={label_style}>Event</label>
-        <Autocomplete
+        <FuzzyChooser
+          events={instruments}
+          value={values.symbol}
+          onChange={(e: any, {newValue}) => {
+
+            console.log(`DEBUG subscribing ${e.target.value} ${newValue}`)
+            return handleSymbolChange(
+            subscribeSymbol(newValue),
+            setFieldValue('symbol', newValue))
+           }
+         }
+        />
+        {/* <Autocomplete
               key="symbol"
               getItemValue={(item) => item.label}
               items={symbols}
@@ -79,7 +92,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
               renderMenu={(items, value, style) => {
                 return <div style={{ ...style, ...menuStyle }} children={items}/>
               }}
-        />
+        /> */}
         <ErrorMessage name="symbol" />
       </div>
 
