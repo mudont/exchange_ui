@@ -19,7 +19,7 @@ import './FuzzyChooser.css'
 
 // Teach Autosuggest how to calculate suggestions for any given input value.
 const getSuggestions = (value: string, events: ReadonlyArray<Instrument>): Array<Instrument> => {
-  return /*value.length === 0? [] : */ (fuzzy.filter(
+  return value.length === 0? events as Array<Instrument>:  (fuzzy.filter(
     value, 
     events as Array<Instrument>, 
     {extract: (e:Instrument) => `${e.symbol} ${e.name}` }

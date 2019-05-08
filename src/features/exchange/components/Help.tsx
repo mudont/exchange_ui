@@ -2,7 +2,7 @@ import * as React from 'react'
 const ReactMarkdown = require('react-markdown/with-html')
 
 const markdown = `
-# Bet on Cricket World Cup without paying vigorish
+# Bet on Cricket World Cup for fun
 
 ## Login/Connect
 
@@ -15,7 +15,20 @@ the site is probably down.
 
 ## The Concept
 
-You need to think in probabilities of events happening, and using probability
+There are two types of things you can trade.
+
+### 1. Binary Events
+
+Binary events settle at a price of 0 (if the event doesn't happen) or 100 (if the event does happen).
+This type of contracts were first made popular by the now defunct [InTrade](https://en.wikipedia.org/wiki/Intrade)
+
+For example, there is an event with symbol 'Ind > Pak' with the description 'India to beat Pakistan'.
+If India does beat Pakistan, the event's final settlement price woould be 100, and anyone who bought 
+the event profits by the difference between 100 and their by price, multiplied by 0.01 x the quantity.
+If Pakistan wins, the event would settle at 0, and anyone who sold the event profits by their
+sale price x 0.01 x quantity.
+
+To arrive at a fair price, you should think in probabilities of the events happening, and using probability
 as a price to trade the event. 
 
 - Estimate the probability of an Event happening.
@@ -41,13 +54,30 @@ as a price to trade the event.
 
 - You can **CANCEL** any unfilled orders by clicking on the Red X in the "My Orders" window 
 
+### 2. Team Performance contracts
 
+These are the symbols like 'India*', with a country name and an asterisk 
+They allow you to bet on a team's performance over the entire tournament (hat tip Tyler Steele).
+
+The final settlement price is calculated as follows
+- 6 points for each round robin win. So a maximum of 54 points available in RR.
+- 14 points for winning the semi
+- 32 points for winning the cup
+- multiply the total by 0.01 
+
+These numbers were chosen to ensure the trading range for these contracts would be
+the same as for binary events - 0 to 100, and trading works and feels exactly like
+binary contracts. The only difference is in final settlement procedure.
+
+If I am doing the math right, there are a total of 330 points (6*45 + 14*2 + 32) points
+available. If you manage to buy 1 contract of every team for a total less than 330 or sold for more than
+330, you would make a riskless profit.
 
 ## Placing Orders
 
 The Order window at the top left is where you Submit orders. 
 
-If you click on the Event Field, you will see a Dropdown of all available games.
+If you start typing in the Event Field, you will see a Dropdown of all available events (fuzzy) matching your input.
 If you choose one, A market orderbook window for that game should appear.
 
 If you click on the Green(for Buy, Red for Sell) area of any orderbook window, the Instrument,

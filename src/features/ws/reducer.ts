@@ -1,4 +1,4 @@
-import { RootAction, MyOrder, MyPosition } from 'MyTypes';
+import { RootAction, MyOrder, MyPosition, LeaderBoard } from 'MyTypes';
 import { Trade, Order, Instrument, Depth, Hello } from 'MyModels';
 import { combineReducers } from 'redux';
 import { getType } from 'typesafe-actions';
@@ -15,7 +15,10 @@ export type SandboxState = Readonly<{
   depth: Readonly<Depth>,
   my_orders: ReadonlyMap<number, MyOrder>,
   my_positions: ReadonlyMap<string, MyPosition>,
+  leaderboard: ReadonlyArray<LeaderBoard>,
 }>;
+
+const initLeaderboard = new Array<LeaderBoard>();
 //console.log(`hello Dflt syms: subs=${JSON.stringify(dfltSyms.values())}`)
 const initHelloState: Hello = {
   _type: 'Hello',
@@ -132,6 +135,24 @@ export default combineReducers<SandboxState, RootAction>({
         } else {
           return state;
         }
+      default:
+        return state;
+    }
+  },
+  leaderboard: (state=initLeaderboard, action) => {
+    switch (action.type) {
+      case getType(actions.wsReceive):
+        if ('leaderboard' === action.payload._type) {
+          const data = action.payload as unknown as LeaderBoard
+          return [...state, data];
+        } else {
+          return state;
+        }
+      case getType(actions.wsClearBranch):
+        if ('leaderboard' === action.payload) {
+          return initLeaderboard
+        }
+        return state;
       default:
         return state;
     }

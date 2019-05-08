@@ -20,6 +20,12 @@ declare module 'MyTypes' {
     pnl: number,
     crash_risk: number,
   }
+  export type LeaderBoard = {
+    rank: number,
+    username: string,
+    pnl: number,
+    crash_pnl: number,
+  }
   //{"_type":"my_orders","id":138,"instrument":"IndPakWC19","
   // order_time":"2019-05-03 00:28:27.034882+00:00",
   // "quantity":40,"filled_quantity":0,"status":"WORKING","max_show_size":40}

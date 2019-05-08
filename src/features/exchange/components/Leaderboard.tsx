@@ -17,7 +17,7 @@ const Tbl: React.FC<Props> = (props) => {
     const columns = [{
         id: 'rank', // Required because our accessor is not a string
         Header: <RA>Rank</RA>,
-        width: 30,
+        width: 40,
         Cell: (props:{value:number}) => <RA>{props.value}</RA>,
         accessor: (d: LeaderBoard) => d.rank // Custom value accessors!
        }, {
@@ -27,14 +27,14 @@ const Tbl: React.FC<Props> = (props) => {
      }, {
       id: 'pnl', // Required because our accessor is not a string
       Header: <RA>P&L</RA>,
-      width: 75,
+      width: 100,
       Cell: (props:{value:number}) => <RA>{props.value}</RA>,
-      accessor: (d: LeaderBoard) => d.pnl // Custom value accessors!
+      accessor: (d: LeaderBoard) => d.pnl.toFixed(2) // Custom value accessors!
      }, {
       Header: () => <RA>Crash Risk</RA>, // Custom header components!
       accessor: 'crash_pnl',
-      width: 75,
-      Cell: (props:{value:number}) => <RA>{props.value}</RA>
+      width: 100,
+      Cell: (props:{value:number}) => <RA>{props.value.toFixed(2)}</RA>
      },
     ]
   //style={{width: "100%", height: "100%", overflowX:'hidden', overflowY:'scroll'}}
