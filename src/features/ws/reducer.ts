@@ -15,11 +15,13 @@ export type SandboxState = Readonly<{
   depth: Readonly<Depth>,
   my_orders: ReadonlyMap<number, MyOrder>,
   my_positions: ReadonlyMap<string, MyPosition>,
-  leaderboard: ReadonlyArray<LeaderBoard>,
-  clearLeaderBoardOnNewData: boolean,
+  leaderboard: { 
+    data: ReadonlyArray<LeaderBoard>,
+    clearLeaderBoardOnNewData: boolean,
+  },
 }>;
 
-const initLeaderboard = new Array<LeaderBoard>();
+const initLeaderboard = {data: new Array<LeaderBoard>(), clearLeaderBoardOnNewData: false}
 //console.log(`hello Dflt syms: subs=${JSON.stringify(dfltSyms.values())}`)
 const initHelloState: Hello = {
   _type: 'Hello',
@@ -140,38 +142,25 @@ export default combineReducers<SandboxState, RootAction>({
         return state;
     }
   },
-  clearLeaderBoardOnNewData: (state=false, action) => {
-    switch (action.type) {
-      case getType(actions.wsReceive):
-        if ('leaderboard' === action.payload._type) {
-          return false;
-        } else {
-          return state;
-        }
-      case getType(actions.wsClearBranch):
-        if ('leaderboard' === action.payload) {
-          return true
-        }
-        return state;
-      default:
-        return state;
-    }
-  
-  },
   leaderboard: (state=initLeaderboard, action) => {
     switch (action.type) {
+
+      case getType(actions.wsClearBranchOnNewData):
+        if ('leaderboard' === action.payload) {
+            return {...state, clearLeaderBoardOnNewData: true}
+        }
+        return state;
+ 
       case getType(actions.wsReceive):
         if ('leaderboard' === action.payload._type) {
           const data = action.payload as unknown as LeaderBoard
-          return [...state, data];
+          if (state.clearLeaderBoardOnNewData) {
+            return {...initLeaderboard, data:[data], clearLeaderBoardOnNewData: false}
+          }
+          return {...state, data: [...state.data, data]};
         } else {
           return state;
         }
-      case getType(actions.wsClearBranch):
-        if ('leaderboard' === action.payload) {
-          return initLeaderboard
-        }
-        return state;
       default:
         return state;
     }

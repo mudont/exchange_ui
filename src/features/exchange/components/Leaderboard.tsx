@@ -10,10 +10,10 @@ const RA: React.FC<{children: any}> = ({children}) => {
 }
 
 type Props = {
-    leaderboard: ReadonlyArray<LeaderBoard>,
+    leaderboardData: ReadonlyArray<LeaderBoard>,
 }
 const Tbl: React.FC<Props> = (props) => {
-    const data = Object.values(props.leaderboard)
+    const data = Object.values(props.leaderboardData)
     const columns = [{
         id: 'rank', // Required because our accessor is not a string
         Header: <RA>Rank</RA>,
@@ -47,7 +47,7 @@ const Tbl: React.FC<Props> = (props) => {
   //const sellColor = '#fdd3ce'
   
 const Leaderboard: React.FC<Props> = props => {
-    const {leaderboard} = props    
+    const {leaderboardData} = props    
     return (
     <div
         style={{
@@ -58,14 +58,14 @@ const Leaderboard: React.FC<Props> = props => {
             <label style={{fontWeight: 'bold'}}> Leaderboard</label>
         </div>
         <div style={{overflowX:'hidden', height:'100%', width:'100%'}}> 
-        <Tbl leaderboard={leaderboard}/>
+        <Tbl leaderboardData={leaderboardData}/>
 
         </div>
     </div>
     )
 }
 const mapStateToProps = (state: RootState,) => ({
-    leaderboard: state.ws.leaderboard,
+    leaderboardData: state.ws.leaderboard.data,
 });
 const dispatchProps = {};
 

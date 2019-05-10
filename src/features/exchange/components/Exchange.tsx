@@ -12,7 +12,7 @@ import Auth from '../../../services/auth0-service';
 import { Instrument } from 'MyModels';
 import TopBar from './TopBar'
 import Ticks from './Ticks'
-import { wsSend, wsClearBranch } from '../../ws/actions';
+import { wsSend, wsClearBranchOnNewData } from '../../ws/actions';
 import * as R from 'ramda'
 import { Tab, Tabs, TabList, TabPanel } from 'react-tabs';
 import "react-tabs/style/react-tabs.css";
@@ -31,7 +31,7 @@ interface MyProps {
     subscribedSymbols: ReadonlySet<string>,
     unsubscribedSymbols: ReadonlySet<string>,
     wsSend: typeof wsSend,
-    wsClearBranch: typeof wsClearBranch,
+    wsClearBranchOnNewData: typeof wsClearBranchOnNewData,
  }
 /**
  * This layout demonstrates how to sync to localstorage.
@@ -95,7 +95,7 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
         <Tabs
             onSelect= {(index: number) => {
                 if (index === 1) {
-                    this.props.wsClearBranch("leaderboard")
+                    this.props.wsClearBranchOnNewData("leaderboard")
                     this.props.wsSend({command: 'get_leaderboard'})
                 }
                 return true
@@ -179,7 +179,7 @@ const mapStateToProps = (state: RootState) => {
 }
 const dispatchProps = {
     wsSend: wsSend,
-    wsClearBranch: wsClearBranch,
+    wsClearBranchOnNewData: wsClearBranchOnNewData,
 };
 
 export const LocalStorageLayout = connect(mapStateToProps, dispatchProps)(LocalStorageLayout_);
