@@ -39,6 +39,7 @@
     "axios": "0.18.0",
     "connected-react-router": "6.4.0",
     "cuid": "2.1.6",
+    "emoji-dictionary": "^1.0.10",
     "fast-deep-equal": "2.0.1",
     "formik": "1.5.2",
     "fuzzy": "^0.1.3",

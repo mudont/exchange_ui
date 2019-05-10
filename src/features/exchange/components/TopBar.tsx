@@ -19,7 +19,7 @@ const TopBar: React.FC<Props> = (props) => {
         <img src={logo}  alt="logo" width="25" height="35"/>
         <div className="container">
         {
-        isAuthenticated() && (
+        connected && (
             <div>
                 {username !== 'nobody' && (`Hello ${username}. Your credit limit is ${(credit_limit||0).toFixed(2)}`)}
                 <button style={{ cursor: 'pointer' }}
@@ -30,7 +30,7 @@ const TopBar: React.FC<Props> = (props) => {
             )
         }
         {
-        !isAuthenticated() && (
+        !connected && !isAuthenticated() && (
             <span>
                 You are not logged in! Please{' '}
                 <button style={{ cursor: 'pointer' }}
@@ -42,7 +42,7 @@ const TopBar: React.FC<Props> = (props) => {
             )
         }
         {
-            !connected && (
+          isAuthenticated() &&  !connected && (
                 <button style={{ cursor: 'pointer' }}
                 onClick={() => {return reconnect({command:'Hello'})}}>
                 Reconnect

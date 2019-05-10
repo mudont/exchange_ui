@@ -20,11 +20,11 @@ const dispatchProps = (dispatch: Dispatch<RootAction>) => ({
     dispatch(submitOrderAsync.request({
       ...values,
     }))},
-  handleSymbolChange: (subAction: ReturnType<typeof subscribeSymbol>, 
-    formAction: any) => {
-    dispatch(subAction)
-    //dispatch(formAction)
-  },
+  // handleSymbolChange: (formAction: any) => {
+  //   //dispatch(subAction)
+  //   dispatch(formAction)
+  // },
+  dispatch,
 });
 const buyColor = '#cefdce'
 const sellColor = '#fdd3ce'
@@ -48,7 +48,7 @@ const label_style = {display: 'block', width: LABEL_WIDTH}
 
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
   const { isSubmitting, order, instruments, values,
-    handleSymbolChange, setFieldValue, } = props;
+    setFieldValue, dispatch} = props;
   //const symbols = instruments.map(i => ({label: i.symbol}))
   return (
     <div style={{backgroundColor: '#d3edf8', overflow:'hidden', border: 1,}}>
@@ -59,12 +59,15 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         <FuzzyChooser
           events={instruments}
           value={values.symbol}
-          onChange={(e: any, {newValue}) => {
+
+          onBlur={(e: any, {newValue}) => {
 
             console.log(`DEBUG subscribing ${e.target.value} ${newValue}`)
-            return handleSymbolChange(
-            subscribeSymbol(newValue),
-            setFieldValue('symbol', newValue))
+            dispatch(subscribeSymbol(newValue))
+           }
+          }
+          onChange={(e: any, {newValue}) => {
+            setFieldValue('symbol', newValue)
            }
          }
         />

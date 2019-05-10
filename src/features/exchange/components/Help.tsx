@@ -1,4 +1,5 @@
 import * as React from 'react'
+import emoji from 'emoji-dictionary'
 const ReactMarkdown = require('react-markdown/with-html')
 
 const markdown = `
@@ -24,23 +25,26 @@ This type of contracts were first made popular by the now defunct [InTrade](http
 
 For example, there is an event with symbol 'Ind > Pak' with the description 'India to beat Pakistan'.
 If India does beat Pakistan, the event's final settlement price woould be 100, and anyone who bought 
-the event profits by the difference between 100 and their by price, multiplied by 0.01 x the quantity.
-If Pakistan wins, the event would settle at 0, and anyone who sold the event profits by their
+the event profits by the difference between 100 and their buy price, multiplied by 0.01 x the quantity.
+If Pakistan wins, the event would have a final settlement price of 0, and anyone who sold the event profits by their
 sale price x 0.01 x quantity.
+
+So if you buy a quantity 10 of "Ind > Pak" at a price of 65 (yes, I think India are favorites :wink:) , you make (100 - 65) x 0.01 x 10 = 3.50 if India 
+wins, and you lose 65 x 0.01 x 10 = 6.50 if Pakistan wins
 
 To arrive at a fair price, you should think in probabilities of the events happening, and using probability
 as a price to trade the event. 
 
 - Estimate the probability of an Event happening.
-- Say you believe India has a 20% to 35% chance of winning the world cup.
-- That would translate on this site to : "I would be willing to buy **IndWChamp19** 
-  at a price below 20 or sell at a price above 35"
-- In the orderbook window, the white column is the "price" (a percentage probability)
-  + Any number on the Green column on the left is a **bid** - the amount (you can think of it as
-    dollars even though the site doesn't guarantee anything) that someone is willing to bet
+- Say you believe India has a 20% to 35% probability of winning the world cup.
+- That should translate to : "I should be willing to buy **IndWChamp19** 
+  at any price below 20 or sell at any price above 35"
+- In the orderbook window ("price ladder"), the white column is the "price" (a percent probability)
+  + Any number on the <span style="background-color:#cefdce;">Green column</span> on the left is a **bid** - the amount 
+    that someone is willing to bet
     the event happening, at price level that is shown to its right. If that price level is
     higher than your probability estimate for the event, you might want to **hit** that bid
-    by clicking on the Red column to the right of that bid, then go to the Order form at
+    by clicking on the <span style="background-color:#fdd3ce;">Red column</span> to the right of that bid, then go to the Order form at
     the top left, type the desired quantity, and click Submit.
   + Any number on the Red column on the right is an **offer** - the amount (you can think of it as
     dollars even though the site doesn't guarantee anything) that someone is willing to bet
@@ -52,7 +56,7 @@ as a price to trade the event.
 - If you don't see any existing bids/offers that you like, you can leave a standing bid/offer
     of your own. (expires in 24 hours) by following the same process as above.
 
-- You can **CANCEL** any unfilled orders by clicking on the Red X in the "My Orders" window 
+- You can **CANCEL** any unfilled and partially filled orders by clicking on the Red <span style="background-color:red;">X</span> in the "My Orders" window 
 
 ### 2. Team Performance contracts
 
@@ -69,8 +73,8 @@ These numbers were chosen to ensure the trading range for these contracts would 
 the same as for binary events - 0 to 100, and trading works and feels exactly like
 binary contracts. The only difference is in final settlement procedure.
 
-If I am doing the math right, there are a total of 330 points (6*45 + 14*2 + 32) points
-available. If you manage to buy 1 contract of every team for a total less than 330 or sold for more than
+If I am doing the math right, there are a total of 330 points (6x45 + 14x2 + 32) points
+available in the 2019 World Cup. If you manage to buy 1 contract of every team for a total less than 330 or sold for more than
 330, you would make a riskless profit.
 
 ## Placing Orders
@@ -80,20 +84,21 @@ The Order window at the top left is where you Submit orders.
 If you start typing in the Event Field, you will see a Dropdown of all available events (fuzzy) matching your input.
 If you choose one, A market orderbook window for that game should appear.
 
-If you click on the Green(for Buy, Red for Sell) area of any orderbook window, the Instrument,
-price level and direction of bet should be populated in the Order window. All you have to 
-do is change the quantity
+If you click on the <span style="background-color:#cefdce;">Green</span>(<span style="background-color:#cefdce;">for Buy</span>, <span style="background-color:#fdd3ce;">Red for Sell</span>) area of any orderbook window, the Instrument,
+price level and direction of bet should be populated in the Order window. Then you have to 
+make sure the quantity is what you want, and click Submit
 
 ## Is the money real?
 
-As of now, it is fake. There is a plan to change that. Though the site won't take responsibility 
-for payments, the plan is publish a settlement list of who owes whom, and leave it to an honor
-system.
+Let us just say the currency is "runs". This is a small private site. If you don't know the exchange rate, you probably shouldn't be using the site :wink:
 
 `
+//var emojified = markdown.replace(/:(\w+):/g, '![:$1:](http://some.emoji.host/$1.png)')
+const emojiSupport = (text: {value:string}) => text.value.replace(/:\w+:/gi, (name:string) => emoji.getUnicode(name))
+
 const Help :React.FC<{}> = () => {
     return (<div> 
-        <ReactMarkdown source={markdown} escapeHtml={false}/> 
+        <ReactMarkdown source={markdown} escapeHtml={false} renderers={{ text: emojiSupport }}/> 
     </div>)
 }
 export default Help

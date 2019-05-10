@@ -16,6 +16,7 @@ export type SandboxState = Readonly<{
   my_orders: ReadonlyMap<number, MyOrder>,
   my_positions: ReadonlyMap<string, MyPosition>,
   leaderboard: ReadonlyArray<LeaderBoard>,
+  clearLeaderBoardOnNewData: boolean,
 }>;
 
 const initLeaderboard = new Array<LeaderBoard>();
@@ -138,6 +139,24 @@ export default combineReducers<SandboxState, RootAction>({
       default:
         return state;
     }
+  },
+  clearLeaderBoardOnNewData: (state=false, action) => {
+    switch (action.type) {
+      case getType(actions.wsReceive):
+        if ('leaderboard' === action.payload._type) {
+          return false;
+        } else {
+          return state;
+        }
+      case getType(actions.wsClearBranch):
+        if ('leaderboard' === action.payload) {
+          return true
+        }
+        return state;
+      default:
+        return state;
+    }
+  
   },
   leaderboard: (state=initLeaderboard, action) => {
     switch (action.type) {

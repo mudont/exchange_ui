@@ -1,4 +1,7 @@
 ## Bug
+  - [ ] dropdown menu triggers symbol subscriptions on down arrow. React to OnBlur 
+        rther than onChange for subscriptions
+    [ ] Don't expire orders in one day. Default to unlimited
   - [x] crash pnl is wrong
   - [x] My Orders have no buy/sell
   - [x] Order quantity should not be changed when clicking on depth ladder
@@ -37,6 +40,8 @@
 - [x] Order form 
 
 ## Infra
+
+- [ ] FusionAuth self hosted opensource authentication/authorization solution
 
 ### Server infra
 - [x] Create SocialAccount, Org/Acc in all authentication paths

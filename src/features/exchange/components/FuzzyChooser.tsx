@@ -47,6 +47,7 @@ type Props = {
   events: ReadonlyArray<Instrument>,
   value: string,
   onChange: (e: React.FormEvent<any>, params: any) => any,
+  onBlur: (e: React.FormEvent<any>, params: any) => any,
 }
 export class FuzzyChooser extends React.Component<Props,State> {
   constructor(props: Props) {
@@ -102,7 +103,7 @@ export class FuzzyChooser extends React.Component<Props,State> {
         onSuggestionsClearRequested={this.onSuggestionsClearRequested}
         getSuggestionValue={getSuggestionValue}
         renderSuggestion={renderSuggestion as any}
-        inputProps={{placeholder: 'Start typing a team', value: this.props.value, onChange: this.props.onChange}}
+        inputProps={{placeholder: 'Start typing a team', value: this.props.value, onBlur: this.props.onBlur, onChange: this.props.onChange}}
       />
     );
   }
