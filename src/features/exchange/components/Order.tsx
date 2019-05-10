@@ -60,10 +60,10 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
           events={instruments}
           value={values.symbol}
 
-          onBlur={(e: any, {newValue}) => {
+          onBlur={(e: any) => {
 
-            console.log(`DEBUG subscribing ${e.target.value} ${newValue}`)
-            dispatch(subscribeSymbol(newValue))
+            console.log(`DEBUG subscribing ${e.target.value}`)
+            dispatch(subscribeSymbol(e.target.value))
            }
           }
           onChange={(e: any, {newValue}) => {

@@ -30,7 +30,7 @@ const TopBar: React.FC<Props> = (props) => {
             )
         }
         {
-        !connected && !isAuthenticated() && (
+        (!isAuthenticated()) && (
             <span>
                 You are not logged in! Please{' '}
                 <button style={{ cursor: 'pointer' }}
