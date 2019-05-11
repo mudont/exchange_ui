@@ -11,42 +11,45 @@ type Props = {
     connected: boolean,
     auth: Auth,
     reconnect: typeof wsSend,
-}
+} 
 const TopBar: React.FC<Props> = (props) => {
-    const {isAuthenticated, username, credit_limit, connected, auth, reconnect} = props
-    const bg = (isAuthenticated() && username !== 'nobody')? 'lightsteelblue' : 'red'
+    const {isAuthenticated, username, connected, auth, reconnect} = props
+    const bg = (connected && username !== 'nobody')? 'lightsteelblue' : 'red'
     return (<FlexRow style={{backgroundColor: bg}}>
         <img src={logo}  alt="logo" width="25" height="35"/>
         <div className="container">
         {
         connected && (
-            <div>
-                {username !== 'nobody' && (`Hello ${username}. Your credit limit is ${(credit_limit||0).toFixed(2)}`)}
+            <span>
+                {username !== 'nobody' && (`Hello ${username}. You are connected to the server. `)}
                 <button style={{ cursor: 'pointer' }}
                     onClick={auth.logout.bind(auth)}>
                 Log Out
                 </button>
-            </div>
+            </span>
             )
         }
         {
         (!isAuthenticated()) && (
             <span>
-                You are not logged in! Please{' '}
+                {' '} No currently Valid Token
                 <button style={{ cursor: 'pointer' }}
                 onClick={auth.login.bind(auth)}>
-                Log In
+                Get Token
                 </button>
-                {' '}to continue.
            </span>
             )
         }
         {
           isAuthenticated() &&  !connected && (
+              <span>
+                You have a token but don't appear to be connected. {' '}
                 <button style={{ cursor: 'pointer' }}
                 onClick={() => {return reconnect({command:'Hello'})}}>
                 Reconnect
-                </button>               
+                </button>
+                {' '} to Server   
+              </span>            
             )
         }
         </div>

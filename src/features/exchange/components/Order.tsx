@@ -48,8 +48,33 @@ const label_style = {display: 'block', width: LABEL_WIDTH}
 
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
   const { isSubmitting, order, instruments, values,
-    setFieldValue, dispatch} = props;
+    setFieldValue, dispatch,} = props;
   //const symbols = instruments.map(i => ({label: i.symbol}))
+  function validateQuantity(value: number) {
+    let error;
+    if (value > 500 ) {
+      error = 'Quantity must be less than 500!';
+    }
+    return error;
+  }
+
+  function validateMaxShowSize(value: number) {
+    let error;
+    if (value < 25 ) {
+      error = 'Max show size must be at least 25!';
+    }
+    return error;
+  }
+
+  function validateLimitPrice(value: number) {
+    let error;
+    if (value < 1  || value > 99) {
+      error = 'Limit price must be between 1 and 99 !';
+    }
+    return error;
+  }
+
+
   return (
     <div style={{backgroundColor: '#d3edf8', overflow:'hidden', border: 1,}}>
       <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> Place Bet </label>
@@ -59,7 +84,6 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         <FuzzyChooser
           events={instruments}
           value={values.symbol}
-
           onBlur={(e: any) => {
 
             console.log(`DEBUG subscribing ${e.target.value}`)
@@ -71,31 +95,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
            }
          }
         />
-        {/* <Autocomplete
-              key="symbol"
-              getItemValue={(item) => item.label}
-              items={symbols}
-              renderItem={(item, isHighlighted) => <div key={item.label} style={{ background: isHighlighted ? 'lightgray' : 'white' }}>{item.label}</div>}
-              value={values.symbol}
-              onChange={(e) => {
-
-                 console.log(`DEBUG subing ${e.target.value}`)
-                 return handleSymbolChange(
-                 subscribeSymbol(e.target.value),
-                 setFieldValue('symbol', e.target.value))
-                }
-              }
-              onSelect={(val) => {
-                console.log(`DEBUG subing ${val}`)
-                return handleSymbolChange(
-                  subscribeSymbol(val),
-                  setFieldValue('symbol', val))
-                }
-              }
-              renderMenu={(items, value, style) => {
-                return <div style={{ ...style, ...menuStyle }} children={items}/>
-              }}
-        /> */}
+ 
         <ErrorMessage name="symbol" />
       </div>
 
@@ -117,10 +117,11 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
           placeholder="LimitPrice"
           component="input"
           type="number"
+          validate={validateLimitPrice}
           required
           autoFocus
         />
-        <ErrorMessage name="symbol" />
+        <ErrorMessage name="limit_price" />
       </div>
 
       <div>
@@ -131,10 +132,11 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
           placeholder="Quantity"
           component="input"
           type="number"
+          validate={validateQuantity}
           required
           autoFocus
         />
-        <ErrorMessage name="symbol" />
+        <ErrorMessage name="quantity" />
       </div>
 
       <div>
@@ -145,9 +147,10 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
           placeholder="MaxShowSize"
           component="input"
           type="number"
+          validate={validateMaxShowSize}
           autoFocus
         />
-        <ErrorMessage name="symbol" />
+        <ErrorMessage name="max_show_size" />
       </div>
       <button key="submit" type="submit" disabled={isSubmitting}>
         Submit

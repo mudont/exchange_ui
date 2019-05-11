@@ -54,7 +54,7 @@ as a price to trade the event.
     the top left, type the desired quantity, and click Submit.
     
 - If you don't see any existing bids/offers that you like, you can leave a standing bid/offer
-    of your own. (expires in 24 hours) by following the same process as above.
+    of your own. by following the same process as above.
 
 - You can **CANCEL** any unfilled and partially filled orders by clicking on the Red <span style="background-color:red;">X</span> in the "My Orders" window 
 

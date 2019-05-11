@@ -1,23 +1,17 @@
 ## Bug
-  - [ ] dropdown menu triggers symbol subscriptions on down arrow. React to OnBlur 
-        rther than onChange for subscriptions
-    [ ] Don't expire orders in one day. Default to unlimited
-  - [x] crash pnl is wrong
-  - [x] My Orders have no buy/sell
-  - [x] Order quantity should not be changed when clicking on depth ladder
 
-## Joshua comments
-  - [x] Login should be more convenient
-  - [n] Checkbox to show Odds rather than Probabilities
-  - [n] Table row height should stay fixed on expand
-  - [?] Order expiration options. Eg: expire orders a beginning of event
-  - [ ] Wants to show the Help page first time, then have a Don't show again flag
+## Features
 
+- [ ] back up database regularly and save it somewhere
+- [ ] "settle" instruments that expire
+- [ ] standard way of copying production db to development machine
 
-## UI features
   - [ ] Credit Limit Check
   - [x] Leaderboard: Top p&l, volume trading, market making
   - [ ] Self match prevention
+  - [ ] Private Groups
+  - [ ] Instrument panel
+  - [ ] Show "my" orders in the ladder
   - [?] Help text below the order dialog
   - [ ] Errors should be shown to users
   - [x] my orders
@@ -41,9 +35,10 @@
 
 ## Infra
 
-- [ ] FusionAuth self hosted opensource authentication/authorization solution
 
 ### Server infra
+
+- [ ] FusionAuth self hosted opensource authentication/authorization solution
 - [x] Create SocialAccount, Org/Acc in all authentication paths
   [ ] It is there for WebSocket token auth, but not for awani.org auth0 nor for password login
 - [x] How to send messages to specific clients. one way is
@@ -60,6 +55,7 @@
 - [x] Deploy as static files? 
 - [x] REST API client
 
+- [ ] Jest/Enzyme tests 
 - [.] Redux state for everything
 
   - [ ] UI
@@ -70,3 +66,10 @@
 - [ ] Use Toolbox pattern to add depth ladders and Orders/Trades/Positions. Add and close windows.
 - [x] React Autosuggest plus fuzzyset.js  for finding instruments
 - [x] Formik Forms
+
+## Joshua comments
+  - [x] Login should be more convenient
+  - [n] Checkbox to show Odds rather than Probabilities
+  - [n] Table row height should stay fixed on expand
+  - [?] Order expiration options. Eg: expire orders a beginning of event
+  - [ ] Wants to show the Help page first time, then have a Don't show again flag
