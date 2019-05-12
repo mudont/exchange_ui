@@ -54,7 +54,7 @@ const Tbl: React.FC<Props> = (props) => {
         {
             props.row.status === 'WORKING' && 
             <button onClick={() => wsSend({command:'cancel', id:props.row.id})}
-            style={{backgroundColor:'red'}}>
+            style={{backgroundColor:'red', fontSize: 12, padding: "0px 2px"}}>
                 x
             </button>
         }

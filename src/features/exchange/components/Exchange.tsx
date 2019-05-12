@@ -109,7 +109,7 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
             <TabPanel>
                 <FlexRow>{/*style={{direction:'ltr', display:'table-row', width:'600px'}}>*/}
                   <FlexColumn>
-                    <div style={{fontSize:'12px', height: '200px', border:'1px solid black'}} 
+                    <div style={{fontSize:'12px', border:'1px solid black'}} 
                         data-grid={{ w:3, h:8, x: 0, y: 0,  static: true,}}
                                 key="Order">
                                 <Order/>

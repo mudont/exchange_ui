@@ -12,6 +12,7 @@ import { Instrument } from 'MyModels';
 import { subscribeSymbol } from '../../ws/actions';
 import {FuzzyChooser} from './FuzzyChooser'
 // import { getPath } from '../../../router-paths';
+import './Order.css';
 
 
 const dispatchProps = (dispatch: Dispatch<RootAction>) => ({
@@ -48,36 +49,16 @@ const label_style = {display: 'block', width: LABEL_WIDTH}
 
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
   const { isSubmitting, order, instruments, values,
-    setFieldValue, dispatch,} = props;
+    setFieldValue, dispatch, errors, touched} = props;
   //const symbols = instruments.map(i => ({label: i.symbol}))
-  function validateQuantity(value: number) {
-    let error;
-    if (value > 500 ) {
-      error = 'Quantity must be less than 500!';
-    }
-    return error;
-  }
-
-  function validateMaxShowSize(value: number) {
-    let error;
-    if (value < 25 ) {
-      error = 'Max show size must be at least 25!';
-    }
-    return error;
-  }
-
-  function validateLimitPrice(value: number) {
-    let error;
-    if (value < 1  || value > 99) {
-      error = 'Limit price must be between 1 and 99 !';
-    }
-    return error;
-  }
-
+  const validateRange = (field: string, minVal: number, maxVal:number) => (value: number): string =>
+    (value < minVal || value > maxVal) ? `${field} must be between ${minVal} and ${maxVal}` : ""
 
   return (
     <div style={{backgroundColor: '#d3edf8', overflow:'hidden', border: 1,}}>
-      <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> Place Bet </label>
+      <label style={{display: 'block', textAlign: 'center', font:'10px', fontWeight: 'bold',backgroundColor: order.is_buy ? buyColor: sellColor}}> 
+        Place Order Here 
+      </label>
     <Form>
       <div>
         <label htmlFor="symbol" style={label_style}>Event</label>
@@ -117,9 +98,12 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
           placeholder="LimitPrice"
           component="input"
           type="number"
-          validate={validateLimitPrice}
+          validate={validateRange('LimitPrice',1, 99)}
           required
           autoFocus
+          className={
+            errors.limit_price && touched.limit_price ? 'text-input error' : 'text-input'
+          }
         />
         <ErrorMessage name="limit_price" />
       </div>
@@ -132,9 +116,12 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
           placeholder="Quantity"
           component="input"
           type="number"
-          validate={validateQuantity}
+          validate={validateRange('Quantity',1,500)}
           required
           autoFocus
+          className={
+            errors.quantity && touched.quantity ? 'text-input error' : 'text-input'
+          }
         />
         <ErrorMessage name="quantity" />
       </div>
@@ -147,8 +134,11 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
           placeholder="MaxShowSize"
           component="input"
           type="number"
-          validate={validateMaxShowSize}
+          validate={validateRange('MaxShowSize', 25, 1000)}
           autoFocus
+          className={
+            errors.max_show_size && touched.max_show_size ? 'text-input error' : 'text-input'
+          }
         />
         <ErrorMessage name="max_show_size" />
       </div>
@@ -156,6 +146,39 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         Submit
       </button>
     </Form>
+    <div style={{backgroundColor: '#eee'}}>
+      <br/>
+      <br/>
+      Examples of ultra-safe <br/>
+      order sthat won't lose,<br/>
+      probably won't get<br/>
+       filled either:
+       <pre style={{backgroundColor:'lightsteelblue', fontWeight:900}}>
+      Event: England*<br/>
+      Buy <br/>
+      Price Limit: 1<br/>
+      Quantity: 1<br/>
+      Max Show: 500<br/>
+      </pre>
+
+      <pre style={{backgroundColor:'lightsteelblue', fontWeight:900}}>
+      Event: Afghanistan*<br/>
+      Sell <br/>
+      Price Limit: 99<br/>
+      Quantity: 1<br/>
+      Max Show: 500<br/>
+      </pre>
+      More interesting one,<br/>
+      if you are serious about<br/>
+      playing:
+      <pre style={{backgroundColor:'lightsteelblue', fontWeight:900}}>
+      Event: IndWChamp19<br/>
+      Buy <br/>
+      Price Limit: 22<br/>
+      Quantity: 100<br/>
+      Max Show: 500<br/>
+      </pre>
+      </div>
     </div>
   );
 };

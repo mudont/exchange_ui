@@ -41,7 +41,7 @@ const DepthLadder: React.FC<Props> = props => {
         </div>
         <br></br>
         <div style={{overflowX:'hidden', height:'100%', width:'110%'}}> 
-        <table style={{width: "100%", height: "100%", overflowX:'hidden'}}>
+        <table style={{width: "100%", height: "100%", overflowX:'hidden', borderSpacing:1}}>
             <colgroup>
             <col style={{backgroundColor:buyColor, width:"40%",}}/>
             <col style={{backgroundColor:"white", width:"20%"}}/>
@@ -64,6 +64,7 @@ const DepthLadder: React.FC<Props> = props => {
                             style={{
                                 height: '12px', width:'100%', backgroundColor:buyColor, border:"0",
                                 fontSize: "10px",
+                                borderRadius: "0px"
                                 // position: "absolute",
                                 // right: "0",
                                 // top: "0",
