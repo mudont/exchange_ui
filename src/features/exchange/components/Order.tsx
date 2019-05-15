@@ -147,10 +147,10 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
       </button>
     </Form>
     <div style={{backgroundColor: '#eee'}}>
-      <br/>
+      <hr/>
       <br/>
       Examples of ultra-safe <br/>
-      order sthat won't lose,<br/>
+      orders that won't lose,<br/>
       probably won't get<br/>
        filled either:
        <pre style={{backgroundColor:'lightsteelblue', fontWeight:900}}>
@@ -168,9 +168,21 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
       Quantity: 1<br/>
       Max Show: 500<br/>
       </pre>
-      More interesting one,<br/>
-      if you are serious about<br/>
-      playing:
+      To get a feel for the
+      site,<br/>
+      Feel free to fill out <br/>
+      and Submit either<br/>
+      of those examples above.<br/>
+      You will see your orders<br/>
+      in the MyOrders window<br/>
+      and in the in pink and<br/>
+      green PriceLadder<br/>
+      Then try canceling them<br/>
+      by clicking on the Red<br/>
+      X in the MyOrders window.<br/>
+      <br/>
+      A more interesting order,<br/>
+      might be:
       <pre style={{backgroundColor:'lightsteelblue', fontWeight:900}}>
       Event: IndWChamp19<br/>
       Buy <br/>

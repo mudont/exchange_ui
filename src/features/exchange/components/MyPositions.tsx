@@ -21,32 +21,32 @@ const Tbl: React.FC<Props> = (props) => {
       id: 'price', // Required because our accessor is not a string
       Header: <RA>Price</RA>,
       width: 40,
-      accessor: (d: MyPosition) => d.price // Custom value accessors!
+      accessor: (d: MyPosition) => d.price.toFixed(2) // Custom value accessors!
     }, {
       Header: () => <RA>Pos</RA>, // Custom header components!
       accessor: 'position',
       width: 40,
-      Cell: (props:{value:number}) => <RA>{props.value}</RA>
+      Cell: (props:{value:number}) => <RA>{props.value.toFixed(2) }</RA>
     }, {
         Header: () => <RA>Cost</RA>, 
         width: 50,
         accessor: 'cost_basis',
-        Cell: (props:{value:number}) => <RA>{props.value}</RA>
+        Cell: (props:{value:number}) => <RA>{props.value.toFixed(2) }</RA>
     }, {
         Header: <RA>MktVal</RA>,
         width:50,
-        Cell: (props:{value:number}) => <RA>{props.value}</RA>,
+        Cell: (props:{value:number}) => <RA>{props.value.toFixed(2) }</RA>,
         accessor: 'mkt_val',
     }, {
         Header: () => <RA>P&L</RA>, // Custom header components!
         accessor: 'pnl',
         width: 50,
-        Cell: (props:{value:number}) => <RA>{props.value}</RA>
+        Cell: (props:{value:number}) => <RA>{props.value.toFixed(2) }</RA>
     }, {
         Header: () => <RA>CrshRsk</RA>, // Custom header components!
         accessor: 'crash_risk',
         width: 50,
-        Cell: (props:{value:number}) => <RA>{props.value}</RA>
+        Cell: (props:{value:number}) => <RA>{props.value.toFixed(2) }</RA>
    }]
   //style={{width: "100%", height: "100%", overflowX:'hidden', overflowY:'scroll'}}
     return <ReactTable style={{fontSize: '10px'}}
@@ -66,7 +66,7 @@ const MyPositions: React.FC<Props> = props => {
             // display:"flex", flexDirection: "column",
             }}>
         <div style={{backgroundColor:buyColor, width:'100%'}}>
-            <label style={{fontWeight: 'bold'}}> My Positions (fake for now, in trial period)</label>
+            <label style={{fontWeight: 'bold'}}> My Positions</label>
         </div>
         <div style={{overflowX:'hidden', height:'100%', width:'100%'}}> 
         <Tbl my_positions={my_positions}/>

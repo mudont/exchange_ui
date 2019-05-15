@@ -125,7 +125,7 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
                         onLayoutChange={this.onLayoutChange}
                     >
                    {this.props.instruments.filter(
-                        (i,ix) => this.props.subscribedSymbols &&
+                        (i,ix) => ix < 10 && this.props.subscribedSymbols &&
                                   this.props.subscribedSymbols.has(i.symbol) &&
                                   !(this.props.unsubscribedSymbols && 
                                     this.props.unsubscribedSymbols.has(i.symbol))

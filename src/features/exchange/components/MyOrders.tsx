@@ -87,7 +87,7 @@ const MyOrders: React.FC<Props> = props => {
             // display:"flex", flexDirection: "column",
             }}>
         <div style={{backgroundColor:'lightyellow', width:'100%'}}><label style={{fontWeight: 'bold'}}> 
-           My Orders(fake for now, in trial period)</label> 
+           My Orders</label> 
         </div>
         <div style={{overflowX:'hidden', height:'100%', width:'100%'}}> 
             <Tbl my_orders={my_orders} wsSend={wsSend}/>

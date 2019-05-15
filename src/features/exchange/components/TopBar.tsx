@@ -21,7 +21,7 @@ const TopBar: React.FC<Props> = (props) => {
         {
         connected && (
             <span>
-                {username !== 'nobody' && (`Hello ${username}. You are connected to the server. `)}
+                {username !== 'nobody' && (`Hi ${username}. You are in the Bradman room. In other words, you are playing for glory, not money `)}
                 <button style={{ cursor: 'pointer' }}
                     onClick={auth.logout.bind(auth)}>
                 Log Out

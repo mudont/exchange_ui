@@ -7,6 +7,21 @@ import { isActionOf } from 'typesafe-actions';
 import { wsSend, wsReceive } from './actions';
 //import { getInstruments, getOrders, getTrades, getUser } from './selectors';
 
+export const wsErrorEpic: Epic<
+RootAction,
+RootAction,
+RootState,
+Services
+> = (action$, state$, { ws, toast }) =>
+action$.pipe(
+  filter(isActionOf(wsReceive)),
+  filter(action => action.payload._type === "Error"),
+  tap((action) => {
+    //console.log(`error : ${JSON.stringify(action)}`)
+    toast.error(`Exchange error ${(action.payload as any).message || "No msg"}`)
+  }),
+  ignoreElements()
+);
 
 export const sendWsEpic: Epic<
   RootAction,
