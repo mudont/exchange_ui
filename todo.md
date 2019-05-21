@@ -1,6 +1,7 @@
 ## Bug
-[ ] Hitting Return on symbol chooser submits orders. [solution](https://stackoverflow.com/questions/4763638/enter-triggers-button-click)
-[ ] Sometimes ladder doesn't show upon tab
+- [ ] Hitting Return on symbol chooser submits orders. [solution](https://stackoverflow.com/questions/4763638/enter-triggers-button-click)
+- [ ] Sometimes ladder doesn't show upon tab
+- [ ] Changing Buy -> Sell in order form doesn't change background color. 
 
 ## Features
 
