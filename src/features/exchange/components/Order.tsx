@@ -142,7 +142,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         />
         <ErrorMessage name="max_show_size" />
       </div>
-      <button key="submit" type="submit" disabled={isSubmitting}>
+      <button key="submit" type="button" disabled={isSubmitting}>
         Submit
       </button>
     </Form>

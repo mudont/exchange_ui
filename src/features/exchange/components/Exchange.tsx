@@ -19,6 +19,7 @@ import "react-tabs/style/react-tabs.css";
 import Help from './Help';
 import Leaderboard from './Leaderboard'
 
+const MAX_LADDERS = 10
 const ReactGridLayout = WidthProvider(Responsive);
 const originalLayout = getFromLS("layout") || [];
 interface MyProps {
@@ -125,17 +126,17 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps,{layout:Layout[]}>
                         onLayoutChange={this.onLayoutChange}
                     >
                    {this.props.instruments.filter(
-                        (i,ix) => ix < 10 && this.props.subscribedSymbols &&
+                        (i,ix) => this.props.subscribedSymbols &&
                                   this.props.subscribedSymbols.has(i.symbol) &&
                                   !(this.props.unsubscribedSymbols && 
                                     this.props.unsubscribedSymbols.has(i.symbol))
-                        
+                    ).filter((i, ix) => ix < MAX_LADDERS    
                     ).map((i, ix) => (
-                        <div style={{width:'100%', fontSize: '10px',border:'1px solid black',}} 
+                        ix <= 10 ? <div style={{width:'100%', fontSize: '10px',border:'1px solid black',}} 
                             key={i.symbol} data-grid={{ minWidth:3, minHeight:8,
                             w: 3, h: 8, x: 3*ix, y: 0,  autoSize: true,  }}>
                             <DepthLadder symbol={i.symbol} name={i.name}></DepthLadder>
-                        </div>
+                        </div> : null
                     )) }
 
                     <div style={{border:'1px solid black'}}
