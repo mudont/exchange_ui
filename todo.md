@@ -2,9 +2,10 @@
 - [ ] Hitting Return on symbol chooser submits orders. [solution](https://stackoverflow.com/questions/4763638/enter-triggers-button-click)
 - [ ] Sometimes ladder doesn't show upon tab
 - [ ] Changing Buy -> Sell in order form doesn't change background color. 
-
+- [ ] ladder layout in last column . should use real estate better
+- [ ] son't show canceled orders
 ## Features
-
+- [ ] Manish would like to see traders' names on fill
 - [ ] back up database regularly and save it somewhere
 - [ ] "settle" instruments that expire
 - [ ] standard way of copying production db to development machine
