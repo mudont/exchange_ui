@@ -66,7 +66,7 @@ const MyPositions: React.FC<Props> = props => {
             // display:"flex", flexDirection: "column",
             }}>
         <div style={{backgroundColor:buyColor, width:'100%'}}>
-            <label style={{fontWeight: 'bold'}}> My Positions</label>
+            <label className="dragHandle" style={{fontWeight: 'bold'}}> My Positions</label>
         </div>
         <div style={{overflowX:'hidden', height:'100%', width:'100%'}}> 
         <Tbl my_positions={my_positions}/>

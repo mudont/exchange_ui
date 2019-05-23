@@ -5,6 +5,11 @@
 - [ ] ladder layout in last column . should use real estate better
 - [ ] son't show canceled orders
 ## Features
+- Instrument Table
+  + search
+  + buttons lift/hit
+  + '+' to show depth
+  + show my orders with cancel
 - [ ] Manish would like to see traders' names on fill
 - [ ] back up database regularly and save it somewhere
 - [ ] "settle" instruments that expire

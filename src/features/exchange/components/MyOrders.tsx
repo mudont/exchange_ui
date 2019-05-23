@@ -14,7 +14,7 @@ const RA: React.FC<{children: any}> = ({children}) => {
 }
 const Tbl: React.FC<Props> = (props) => {
     const {wsSend} = props
-    const data = Object.values(props.my_orders)
+    const data = Object.values(props.my_orders).filter(o => o.status !== 'CANCELED')
     const columns = [{
       Header: () => <RA> Id </RA>,
       accessor: 'id',
@@ -86,7 +86,7 @@ const MyOrders: React.FC<Props> = props => {
             height:"100%", overflow: "hidden",
             // display:"flex", flexDirection: "column",
             }}>
-        <div style={{backgroundColor:'lightyellow', width:'100%'}}><label style={{fontWeight: 'bold'}}> 
+        <div className="dragHandle" style={{backgroundColor:'lightyellow', width:'100%'}}><label style={{fontWeight: 'bold'}}> 
            My Orders</label> 
         </div>
         <div style={{overflowX:'hidden', height:'100%', width:'100%'}}> 

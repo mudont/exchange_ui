@@ -52,7 +52,7 @@ const Ticks: React.FC<Props> = props => {
             // display:"flex", flexDirection: "column",
             }}>
         <div style={{backgroundColor:'paleturquoise', width:'100%'}}>
-            <label style={{fontWeight: 'bold'}}> Transactions since I connected, including mine</label>
+            <label className="dragHandle" style={{fontWeight: 'bold'}}> Transactions since I connected, including mine</label>
         </div>
         <div style={{overflowX:'hidden', height:'100%', width:'100%'}}> 
         <Tbl trades={trades}/>
