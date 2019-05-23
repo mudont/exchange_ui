@@ -11,6 +11,7 @@
   + '+' to show depth
   + show my orders at each level
   + with cancel button
+  + Dark theme
   + show fills for each order
   + show position? Maybe overkill
 - [ ] Don't sucbsribe any symbols by default. Show depth ladder for all subscribed symbols
