@@ -144,7 +144,7 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps, { layout: Layout[
                 ))} */}
 
                 <div style={{ border: '1px solid black' }}
-                  key="Instruments" data-grid={{ w: 12, h: 8, x: 0, y: 10, autoSize: true, }}>
+                  key="Instruments" data-grid={{ w: 12, h: 16, x: 0, y: 0, autoSize: true, }}>
                   <Instruments />
                 </div>
                 <div style={{ border: '1px solid black' }}

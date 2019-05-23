@@ -64,17 +64,28 @@ const columns = [{
   width: 50,
   accessor: 'bestBidQty',
   Cell: (props: { row: Tradeable, value: number }) =>
-    <SellRA>
+    <BuyRA>
       <button
-        style={{ backgroundColor: sellColor, fontSize: 12, padding: "0px 2px" }}>
+        style={{ backgroundColor: buyColor, fontSize: 12, padding: "0px 2px" }}>
         {props.value.toFixed(0)}
       </button>
 
-    </SellRA>
+    </BuyRA>
 }, {
   Header: () => <RA>BidPrice</RA>,
   width: 50,
   accessor: 'bestBidPrice',
+  Cell: (props: { value: number }) => <BuyRA>
+    <button
+      style={{ backgroundColor: buyColor, fontSize: 12, padding: "0px 2px" }}>
+      {props.value.toFixed(0)}
+    </button>
+
+  </BuyRA>
+}, {
+  Header: () => <RA>AskPrice</RA>,
+  width: 50,
+  accessor: 'bestAskPrice',
   Cell: (props: { value: number }) => <SellRA>
     <button
       style={{ backgroundColor: sellColor, fontSize: 12, padding: "0px 2px" }}>
@@ -83,27 +94,16 @@ const columns = [{
 
   </SellRA>
 }, {
-  Header: () => <RA>AskPrice</RA>,
-  width: 50,
-  accessor: 'bestAskPrice',
-  Cell: (props: { value: number }) => <BuyRA>
-    <button
-      style={{ backgroundColor: buyColor, fontSize: 12, padding: "0px 2px" }}>
-      {props.value.toFixed(0)}
-    </button>
-
-  </BuyRA>
-}, {
   Header: () => <RA>AskQty</RA>,
   width: 50,
   accessor: 'bestAskQty',
-  Cell: (props: { value: number }) => <BuyRA>
+  Cell: (props: { value: number }) => <SellRA>
     <button
-      style={{ backgroundColor: buyColor, fontSize: 12, padding: "0px 2px" }}>
+      style={{ backgroundColor: sellColor, fontSize: 12, padding: "0px 2px" }}>
       {props.value.toFixed(0)}
     </button>
 
-  </BuyRA>
+  </SellRA>
 }]
 
 const Tbl: React.FC<Props> = (props) => {
@@ -115,47 +115,47 @@ const Tbl: React.FC<Props> = (props) => {
     filterable
     data={data as any}
     columns={columns}
-    defaultFilterMethod= {(filter, row, column) => {
+    defaultFilterMethod={(filter, row, column) => {
       let rx: RegExp
       try {
         rx = new RegExp(filter.value, "i")
-      } catch(e) {
+      } catch (e) {
         return false
       }
       return row[column.id].match(rx)
     }}
-    getTdProps = {(state: any, row: undefined | { original: Tradeable }, column: undefined | { id: string }, instance: any) => {
-   return {
-    onClick: (e: Event, handleOriginal: Function) => {
-      console.log(`row clicked`, column)
-      if (row && column && column.id === 'bestBidPrice') {
-        const { symbol, bestBidPrice/*, bestAskPrice, bestBidQty, bestAskQty*/ } = row.original
-        console.log(`bbp clicked`)
-        props.handleClick({
-          symbol: symbol, is_buy: false, quantity: props.currOrder.quantity, limit_price: bestBidPrice,
-          max_show_size: props.currOrder.max_show_size
-        })
+    getTdProps={(state: any, row: undefined | { original: Tradeable }, column: undefined | { id: string }, instance: any) => {
+      return {
+        onClick: (e: Event, handleOriginal: Function) => {
+          console.log(`row clicked`, column)
+          if (row && column && column.id === 'bestBidPrice') {
+            const { symbol, bestBidPrice/*, bestAskPrice, bestBidQty, bestAskQty*/ } = row.original
+            console.log(`bbp clicked`)
+            props.handleClick({
+              symbol: symbol, is_buy: false, quantity: props.currOrder.quantity, limit_price: bestBidPrice,
+              max_show_size: props.currOrder.max_show_size
+            })
+          }
+          if (row && column && column.id === 'bestAskPrice') {
+            const { symbol, bestAskPrice } = row.original
+            console.log(`bbp clicked`)
+            props.handleClick({
+              symbol: symbol, is_buy: true, quantity: props.currOrder.quantity, limit_price: bestAskPrice,
+              max_show_size: props.currOrder.max_show_size
+            })
+          }
+          // IMPORTANT! React-Table uses onClick internally to trigger
+          // events like expanding SubComponents and pivots.
+          // By default a custom 'onClick' handler will override this functionality.
+          // If you want to fire the original onClick handler, call the
+          // 'handleOriginal' function.
+          if (handleOriginal) {
+            handleOriginal()
+          }
+        }
       }
-      if (row && column && column.id === 'bestAskPrice') {
-        const { symbol, bestAskPrice } = row.original
-        console.log(`bbp clicked`)
-        props.handleClick({
-          symbol: symbol, is_buy: true, quantity: props.currOrder.quantity, limit_price: bestAskPrice,
-          max_show_size: props.currOrder.max_show_size
-        })
-      }
-      // IMPORTANT! React-Table uses onClick internally to trigger
-      // events like expanding SubComponents and pivots.
-      // By default a custom 'onClick' handler will override this functionality.
-      // If you want to fire the original onClick handler, call the
-      // 'handleOriginal' function.
-      if (handleOriginal) {
-        handleOriginal()
-      }
-    }
-  }
-}}
-/>
+    }}
+  />
 }
 
 const Instruments: React.FC<Props> = props => {
