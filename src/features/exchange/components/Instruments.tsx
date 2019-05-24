@@ -14,6 +14,19 @@ import { createSelector } from 'reselect'
 // const sellColor = '#fdd3ce'
 const buyColor = 'darkgreen'
 const sellColor = 'darkred'
+export const gcd = (num1: number, num2: number): number => {
+  if (num1 === 0 || num2 === 0) { return 0 }
+  if (num1 === num2) { return num1 }
+  if (num1 > num2) { return gcd(num1 - num2, num2) }
+  return gcd(num1, num2 - num1);
+};
+
+const probToOdds = (prob: number): string => {
+  if (prob > 0 && prob < 1) { prob *= 100 }
+  const f = gcd(Math.round(100 - prob), prob)
+  return `${(100 - prob) / f}/${prob / f}`
+}
+
 // const FoldableTable = FoldableTableHOC(ReactTable);
 const RA: React.FC<{ children: any }> = ({ children }) => {
   return (<div style={{ textAlign: "right" }}> {children}</div>)
@@ -53,9 +66,10 @@ const tradeableSelector = createSelector(
       const bestAskPrice = asks.length > 0 ? asks[0][1] : 0
       const bestAskQty = asks.length > 0 ? asks[0][2] : 0
       //const depthLen = Math.max(bids.length - 1, asks.length - 1)
-      
+
       return {
-        ...i, bestBidQty, bestBidPrice, bestAskPrice, bestAskQty,
+        ...i, bestBidQty, bestBidOdds: probToOdds(bestBidPrice), bestBidPrice,
+        bestAskPrice, bestAskQty, bestAskOdds: probToOdds(100 - bestAskPrice),
         bids: bids.filter((_, ix) => ix > 0),
         asks: asks.filter((_, ix) => ix > 0),
       }
@@ -87,12 +101,18 @@ const columns = [{
   filterable: false,
   Cell: () => <SellRA>Hit</SellRA>
 }, {
-  Header: () => <RA>BidQ</RA>,
+  Header: () => <RA>QtyB</RA>,
   width: 40,
   filterable: false,
   accessor: 'bestBidQty',
   Cell: (props: { row: Tradeable, value: number }) =>
     <BuyRA>{props.value.toFixed(0)}</BuyRA>
+}, {
+  Header: () => <RA>OddsB</RA>,
+  width: 40,
+  filterable: false,
+  accessor: 'bestBidOdds',
+  Cell: (props: { value: string }) => <BuyRA>{props.value} </BuyRA>
 }, {
   Header: () => <RA>Bid</RA>,
   width: 25,
@@ -111,7 +131,13 @@ const columns = [{
   accessor: 'bestAskPrice',
   Cell: (props: { value: number }) => <SellRA> {props.value.toFixed(0)}</SellRA>
 }, {
-  Header: () => <RA>AskQ</RA>,
+  Header: () => <RA>OddsA</RA>,
+  width: 40,
+  filterable: false,
+  accessor: 'bestAskOdds',
+  Cell: (props: { value: string }) => <SellRA> {props.value}</SellRA>
+}, {
+  Header: () => <RA>QtyA</RA>,
   width: 40,
   filterable: false,
   accessor: 'bestAskQty',
@@ -170,7 +196,7 @@ const Tbl: React.FC<Props> = (props) => {
               max_show_size: props.currOrder.max_show_size
             })
           }
-          if (row && column && (column.id === 'bestBidPrice' || column.id === 'bestBidQty')) {
+          if (row && column && (column.id === 'bestBidPrice' || column.id === 'bestBidQty' || column.id === 'bestBidOdds')) {
             const { symbol, bestBidPrice } = row.original
             console.log(`bbpq clicked`)
             props.handleClick({
@@ -178,7 +204,7 @@ const Tbl: React.FC<Props> = (props) => {
               max_show_size: props.currOrder.max_show_size
             })
           }
-          if (row && column && (column.id === 'bestAskPrice' || column.id === 'bestAskQty')) {
+          if (row && column && (column.id === 'bestAskPrice' || column.id === 'bestAskQty' || column.id === 'bestAskOdds')) {
             const { symbol, bestAskPrice } = row.original
             console.log(`bapq clicked`)
             props.handleClick({
