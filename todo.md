@@ -6,10 +6,15 @@
 - [ ] son't show canceled orders
 ## Features
 - Instrument Table
-  + search
+  + ~~search~~
   + buttons lift/hit
   + '+' to show depth
-  + show my orders with cancel
+  + show my orders at each level
+  + with cancel button
+  + Dark theme
+  + show fills for each order
+  + show position? Maybe overkill
+- [ ] Don't sucbsribe any symbols by default. Show depth ladder for all subscribed symbols
 - [ ] Manish would like to see traders' names on fill
 - [ ] back up database regularly and save it somewhere
 - [ ] "settle" instruments that expire
