@@ -3,7 +3,7 @@ import { RootState } from 'MyTypes';
 import { Trade } from 'MyModels'
 import { connect } from 'react-redux'
 import ReactTable from 'react-table'
-import 'react-table/react-table.css'
+//import 'react-table/react-table.css'
 
 type Props = {
     trades: ReadonlyArray<Trade>,

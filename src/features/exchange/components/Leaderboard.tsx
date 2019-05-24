@@ -3,7 +3,7 @@ import * as React from 'react'
 import { LeaderBoard, RootState } from 'MyTypes';
 import { connect } from 'react-redux'
 import ReactTable from 'react-table'
-import 'react-table/react-table.css'
+//import 'react-table/react-table.css'
 
 const RA: React.FC<{children: any}> = ({children}) => {
     return (<div style={{ textAlign: "right"}}> {children}</div>)

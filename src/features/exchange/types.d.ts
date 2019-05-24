@@ -32,3 +32,13 @@ declare module 'MyTypes' {
 }
 
 declare module 'react-formik-ui';
+declare module 'react-table/lib/hoc/foldableTable' {
+  import {TableProps} from 'react-table'
+  import { ComponentType, ComponentClass } from 'react';
+
+  declare function selectTableHOC<Props extends Partial<TableProps>>(
+    WrappedComponent: ComponentType<Props>,
+    options?: SelectTableHOCOptions
+  ): ComponentClass<Props>;
+  export default FoldableTableHOC
+}

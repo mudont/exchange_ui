@@ -4,6 +4,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 
 import './index.css';
+import './react-table-dark.css'
 import 'react-grid-layout/css/styles.css'
 import 'react-resizable/css/styles.css'
 import * as serviceWorker from './serviceWorker';
