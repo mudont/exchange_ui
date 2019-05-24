@@ -1,19 +1,29 @@
 ## Bug
-- [ ] Hitting Return on symbol chooser submits orders. [solution](https://stackoverflow.com/questions/4763638/enter-triggers-button-click)
-- [ ] Sometimes ladder doesn't show upon tab
+- [x] Hitting Return on symbol chooser submits orders. [solution](https://stackoverflow.com/questions/4763638/enter-triggers-button-click)
+- [x] Sometimes ladder doesn't show upon tab
 - [ ] Changing Buy -> Sell in order form doesn't change background color. 
 - [ ] ladder layout in last column . should use real estate better
-- [ ] son't show canceled orders
+- [x] Don't show canceled orders
 ## Features
+- User prefs
+  + [ ] units probabilities or odds (only if price unit is %prob)
+  + [ ] nickname
+- UI
+  - [ ] Flash Order when it is changed
+  - [ ] Update Help
+  - [ ] Add tooltips for detail
+  - [ ] Remove extra space below title bars
+  - [ ] Make all tables striped, font 12, search field
 - Instrument Table
-  + ~~search~~
-  + buttons lift/hit
-  + '+' to show depth
-  + show my orders at each level
-  + with cancel button
-  + Dark theme
-  + show fills for each order
-  + show position? Maybe overkill
+  + Show odds
+  + [x] search
+  + [x] buttons lift/hit
+  + [ ] '+' to show depth
+  + [ ] show my orders at each level
+  + [ ] with cancel button
+  + [x] Dark theme
+  + [ ] show fills for each order
+  + [ ] show position? Maybe overkill
 - [ ] Don't sucbsribe any symbols by default. Show depth ladder for all subscribed symbols
 - [ ] Manish would like to see traders' names on fill
 - [ ] back up database regularly and save it somewhere
@@ -25,7 +35,7 @@
   - [ ] Self match prevention
   - [ ] Private Groups
   - [ ] Instrument panel
-  - [ ] Show "my" orders in the ladder
+  - [ ] ~~Show "my" orders in the ladder
   - [?] Help text below the order dialog
   - [ ] Errors should be shown to users
   - [x] my orders
