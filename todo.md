@@ -5,6 +5,9 @@
 - [ ] ladder layout in last column . should use real estate better
 - [ ] son't show canceled orders
 ## Features
+- User prefs
+  + units probabilities or odds (only if price unit is %prob)
+  + nickname
 - Instrument Table
   + ~~search~~
   + buttons lift/hit
