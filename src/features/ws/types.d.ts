@@ -1,3 +1,5 @@
+import { MyOrder } from "MyTypes";
+
 declare module 'MyModels' {
     export type Hello = {
         _type: 'Hello',
@@ -47,6 +49,6 @@ declare module 'MyModels' {
     export interface Depth {
         [symbol: string]: Ladder
     }
-    export type WsObject = Hello | Instrument | Order | Trade | Depth | Error | Close;
+    export type WsObject = Hello | Instrument | Order | Trade | Depth | Error | Close ;
   }
   

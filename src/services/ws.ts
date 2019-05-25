@@ -33,7 +33,7 @@ export const ws = (function () {
             }
             ws.onmessage = (evt: MessageEvent) => {
                 const json = JSON.parse(evt.data);
-                //console.log(`Received data: ${JSON.stringify(json)}`);
+                console.log(`Received data: ${JSON.stringify(json)}`);
                 dispatch(wsReceive(json))
             }
             ws.onerror = function (evt: Event) {

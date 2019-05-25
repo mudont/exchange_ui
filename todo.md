@@ -4,6 +4,11 @@
 - [ ] Changing Buy -> Sell in order form doesn't change background color. 
 - [ ] ladder layout in last column . should use real estate better
 - [x] Don't show canceled orders
+- [ ] toasts should stay longer, showld get logged to a window
+## Performance Bugs
+- [ ] client requesting all instruments, my_orders and my_positions
+- [ ] server doesn't need to send canceled orders, maybe even old completed orders
+- [ ] [0,pp,0] rows of ladders are unnecessary now
 ## Features
 - User prefs
   + [ ] units probabilities or odds (only if price unit is %prob)

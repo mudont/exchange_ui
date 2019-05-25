@@ -81,7 +81,7 @@ const tradeableSelector = createSelector(
       let moreLevels: Array<DepthLevel> = [];
       let askSweepQty = bestAskQty
       let bidSweepQty = bestBidQty
-    for (let i = 1; i < depthLen; i++) {
+      for (let i = 1; i < depthLen; i++) {
         let [bidQty, bidPrice] = (i < bids.length) ? [bids[i][0], bids[i][1]] : [null, null]
         let [askPrice, askQty] = (i < asks.length) ? [asks[i][1], asks[i][2]] : [null, null]
         if (askQty) askSweepQty += askQty
@@ -94,8 +94,8 @@ const tradeableSelector = createSelector(
         })
       }
       return {
-        ...ins, bestBidQty, bestBidOdds: ins.symbol.match(/\*$/) ? '' : probToOdds(bestBidPrice), bestBidPrice,
-        bestAskPrice, bestAskQty, bestAskOdds: ins.symbol.match(/\*$/) ? '' : probToOdds(100 - bestAskPrice),
+        ...ins, bestBidQty, bestBidOdds: !bestBidPrice || ins.symbol.match(/\*$/) ? '' : probToOdds(bestBidPrice), bestBidPrice,
+        bestAskPrice, bestAskQty, bestAskOdds: !bestAskPrice || ins.symbol.match(/\*$/) ? '' : probToOdds(100 - bestAskPrice),
         moreLevels,
       }
     })
@@ -119,21 +119,21 @@ const BuyButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, valu
 const SellButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? <SellRA>{props.value} </SellRA> : <div />
 
 const bidHitCol = {
-  Header: 'Hit', width: 30, filterable: false,
+  Header: 'Hit', width: 40, filterable: false,
   Cell: (props: { row: Tradeable, value: number }) => (props.row.bestBidQty ? <SellRA>Hit</SellRA> : <div />)
 }
 const askLiftCol = {
-  Header: 'Lift', width: 30, filterable: false,
+  Header: 'Lift', width: 40, filterable: false,
   Cell: (props: { row: Tradeable, value: number }) => (props.row.bestAskQty ? <BuyRA>Lift</BuyRA> : <div />)
 }
 
 const bidSwpCol = {
-  Header: 'Swp', accessor: 'bSwp', width: 30, filterable: false,
-  Cell: (props: { row: DepthLevel, value: number }) => (props.row.bidQty ? <SellRA>Swp</SellRA> : <div />)
+  Header: 'Sweep', accessor: 'bSwp', width: 40, filterable: false,
+  Cell: (props: { row: DepthLevel, value: number }) => (props.row.bidQty ? <SellRA>Sweep</SellRA> : <div />)
 }
 const askSwpCol = {
-  Header: 'Swp', accessor: 'aSwp', width: 30, filterable: false,
-  Cell: (props: { row: DepthLevel, value: number }) => (props.row.askQty ? <BuyRA>Swp</BuyRA> : <div />)
+  Header: 'Sweep', accessor: 'aSwp', width: 40, filterable: false,
+  Cell: (props: { row: DepthLevel, value: number }) => (props.row.askQty ? <BuyRA>Sweep</BuyRA> : <div />)
 }
 const atCol = { Header: () => <RA>@</RA>, width: 14, filterable: false, Cell: () => <span style={{ fontSize: '10px' }}>@</span> }
 const bidQtyCol = (cn: string) => ({

@@ -5,7 +5,7 @@ declare module 'MyTypes' {
     symbol: string,
     is_buy: boolean,
     limit_price: number,
-    order_time: string,
+    begin_time: string,
     quantity: number,
     filled_quantity: number,
     status: string,
