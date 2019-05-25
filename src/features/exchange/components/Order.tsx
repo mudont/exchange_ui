@@ -62,7 +62,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
       </label>
       <Form>
         <div>
-          <label htmlFor="symbol" style={label_style}>Event</label>
+          <label htmlFor="symbol" style={label_style}>Symbol</label>
           <FuzzyChooser
             events={instruments}
             value={values.symbol}
@@ -155,7 +155,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         probably won't get<br />
         filled either:
        <pre style={{ backgroundColor: 'lightsteelblue', fontWeight: 900 }}>
-          Event: England*<br />
+          Symbol: England*<br />
           Buy <br />
           Price Limit: 1<br />
           Quantity: 1<br />
@@ -163,7 +163,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         </pre>
 
         <pre style={{ backgroundColor: 'lightsteelblue', fontWeight: 900 }}>
-          Event: Afghanistan*<br />
+          Symbol: Afghanistan*<br />
           Sell <br />
           Price Limit: 99<br />
           Quantity: 1<br />
@@ -176,8 +176,6 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         of those examples above.<br />
         You will see your orders<br />
         in the MyOrders window<br />
-        and in the in pink and<br />
-        green PriceLadder<br />
         Then try canceling them<br />
         by clicking on the Red<br />
         X in the MyOrders window.<br />
@@ -185,7 +183,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         A more interesting order,<br />
         might be:
       <pre style={{ backgroundColor: 'lightsteelblue', fontWeight: 900 }}>
-          Event: IndWChamp19<br />
+          Symbol: IndWChamp19<br />
           Buy <br />
           Price Limit: 22<br />
           Quantity: 100<br />

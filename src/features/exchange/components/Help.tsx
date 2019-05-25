@@ -79,14 +79,13 @@ available in the 2019 World Cup. If you manage to buy 1 contract of every team f
 
 ## Placing Orders
 
-The Order window at the top left is where you Submit orders. 
+The Order form at the top left is where you Submit orders. 
 
-If you start typing in the Event Field, you will see a Dropdown of all available events (fuzzy) matching your input.
-If you choose one, A market orderbook window for that game should appear.
-
-If you click on the <span style="background-color:#cefdce;">Green</span>(<span style="background-color:#cefdce;">for Buy</span>, <span style="background-color:#fdd3ce;">Red for Sell</span>) area of any orderbook window, the Instrument,
-price level and direction of bet should be populated in the Order window. Then you have to 
-make sure the quantity is what you want, and click Submit
+You can fill out the fields in that form and click on Submit, but perhaps the more intuitive way to choose the 'instrument' 
+is via the Instrument panel. You can find the instrument by typing some part of the name/symbol in the search fields at the
+top left. Then if you click Lift, the instrument, the best offered price and the available quantity will be filled in the
+Order form for you. You may then adjust the quantity (or any oher field) ad click Submit. You should get filled unless
+someone else beat you to the offer or the offerer canceld their order
 
 ## Is the money real?
 
@@ -94,11 +93,11 @@ Let us just say the currency is "runs". This is a small private site. If you don
 
 `
 //var emojified = markdown.replace(/:(\w+):/g, '![:$1:](http://some.emoji.host/$1.png)')
-const emojiSupport = (text: {value:string}) => text.value.replace(/:\w+:/gi, (name:string) => emoji.getUnicode(name))
+const emojiSupport = (text: { value: string }) => text.value.replace(/:\w+:/gi, (name: string) => emoji.getUnicode(name))
 
-const Help :React.FC<{}> = () => {
-    return (<div> 
-        <ReactMarkdown source={markdown} escapeHtml={false} renderers={{ text: emojiSupport }}/> 
+const Help: React.FC<{}> = () => {
+    return (<div>
+        <ReactMarkdown source={markdown} escapeHtml={false} renderers={{ text: emojiSupport }} />
     </div>)
 }
 export default Help
