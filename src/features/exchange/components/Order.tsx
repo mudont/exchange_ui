@@ -55,10 +55,10 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
   const validateRange = (field: string, minVal: number, maxVal: number) => (value: number): string =>
     (value < minVal || value > maxVal) ? `${field} must be between ${minVal} and ${maxVal}` : ""
   const titleBgColor = values.is_buy === "1" ? 
-          (order.flashRequestCount > 0 ? 'darkgreen' : buyColor) : 
-          (order.flashRequestCount > 0 ? 'darkred' : sellColor)
+          (order.flashRequestCount > 0 ? 'lightgreen' : buyColor) : 
+          (order.flashRequestCount > 0 ? 'crimson' : sellColor)
   const formBgColor = order.flashRequestCount > 0 ? 
-    (values.is_buy === "1" ? 'lightgreen' : 'lightred') : 
+    (values.is_buy === "1" ? 'lightgreen' : 'crimson') : 
     '#d3edf8'
   return (
     <div style={{ backgroundColor: formBgColor, overflow: 'hidden', border: 1, }}>
