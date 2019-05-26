@@ -8,15 +8,22 @@ import {
   updateInstrumentAsync,
   deleteInstrumentAsync,
   setCurrOrder,
+  stopFlashingOrder,
 } from './actions';
 
 const reducer = combineReducers({
   currOrder: createReducer({symbol:'', is_buy: true, quantity: 1, 
-                            max_show_size:500, limit_price:1})
+                            max_show_size:500, limit_price:1, flashRequestCount: 0})
   .handleAction([setCurrOrder], (state, action) => ({
     ...state,
-    ...action.payload
-  })),
+    ...action.payload,
+    flashRequestCount: state.flashRequestCount + 1,
+  }))
+  .handleAction([stopFlashingOrder], (state, action) => ({
+    ...state,
+    flashRequestCount: state.flashRequestCount - 1,
+  }))
+  ,
 
   isLoadingInstruments: createReducer(false as boolean)
     .handleAction([loadInstrumentsAsync.request], (state, action) => true)

@@ -42,22 +42,30 @@ const sellColor = '#fdd3ce'
 //   //maxHeight: '50%', // TODO: don't cheat, let it flow to the bottom
 // }
 type Props = ReturnType<typeof dispatchProps> & {
-  order: OrderFormValues,
+  order: OrderFormValues & { flashRequestCount: number },
   instruments: ReadonlyArray<Instrument>,
 };
 const LABEL_WIDTH = '100px'
 const label_style = { display: 'block', width: LABEL_WIDTH }
 
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
-  const { isSubmitting, /*order,*/ instruments, values,
+  const { isSubmitting, order, instruments, values,
     setFieldValue, dispatch, errors, touched } = props;
   //const symbols = instruments.map(i => ({label: i.symbol}))
   const validateRange = (field: string, minVal: number, maxVal: number) => (value: number): string =>
     (value < minVal || value > maxVal) ? `${field} must be between ${minVal} and ${maxVal}` : ""
-
+  const titleBgColor = values.is_buy === "1" ? 
+          (order.flashRequestCount > 0 ? 'darkgreen' : buyColor) : 
+          (order.flashRequestCount > 0 ? 'darkred' : sellColor)
+  const formBgColor = order.flashRequestCount > 0 ? 
+    (values.is_buy === "1" ? 'lightgreen' : 'lightred') : 
+    '#d3edf8'
   return (
-    <div style={{ backgroundColor: '#d3edf8', overflow: 'hidden', border: 1, }}>
-      <label style={{ display: 'block', textAlign: 'center', font: '10px', fontWeight: 'bold', backgroundColor: values.is_buy === "1" ? buyColor : sellColor }}>
+    <div style={{ backgroundColor: formBgColor, overflow: 'hidden', border: 1, }}>
+      <label style={{
+        display: 'block', textAlign: 'center', font: '10px', fontWeight: 'bold',
+        backgroundColor: titleBgColor
+      }}>
         Place Order Here
       </label>
       <Form>
@@ -143,7 +151,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
           />
           <ErrorMessage name="max_show_size" />
         </div>
-        <button key="submit" type="button" disabled={isSubmitting} onClick={()=> {props.handleSubmit()}}>
+        <button key="submit" type="button" disabled={isSubmitting} onClick={() => { props.handleSubmit() }}>
           Submit
       </button>
       </Form>
@@ -214,6 +222,7 @@ export default compose(
       quantity: (data && data.quantity) || 0,
       max_show_size: (data && data.max_show_size) || 0,
       limit_price: (data && data.limit_price) || 0,
+      flashRequestCount: (data && data.flashRequestCount) || 0,
     }),
     handleSubmit: (values, form) => {
       const cleanedValues = { ...values, is_buy: (values.is_buy === "1" ? true : false) }

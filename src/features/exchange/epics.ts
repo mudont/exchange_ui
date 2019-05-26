@@ -1,6 +1,6 @@
 import { RootEpic } from 'MyTypes';
 import { from, of } from 'rxjs';
-import { filter, switchMap, map, catchError, first } from 'rxjs/operators';
+import { filter, switchMap, map, catchError, first, delay } from 'rxjs/operators';
 import { isActionOf } from 'typesafe-actions';
 
 import {
@@ -9,8 +9,10 @@ import {
   updateInstrumentAsync,
   deleteInstrumentAsync,
   submitOrderAsync,
+  setCurrOrder,
+  stopFlashingOrder,
 } from './actions';
-import {wsSend} from '../ws/actions'
+import { wsSend } from '../ws/actions'
 
 export const submitOrderEpic: RootEpic = (action$, state$, { api }) =>
   action$.pipe(
@@ -22,7 +24,7 @@ export const submitOrderEpic: RootEpic = (action$, state$, { api }) =>
       })
     })
   );// as Observable<any>;
-  export const loadInstrumentsEpic: RootEpic = (action$, state$, { api }) =>
+export const loadInstrumentsEpic: RootEpic = (action$, state$, { api }) =>
   action$.pipe(
     filter(isActionOf(loadInstrumentsAsync.request)),
     switchMap(() =>
@@ -69,7 +71,14 @@ export const deleteInstrumentsEpic: RootEpic = (action$, state$, { api, toast })
     )
   );
 
-  export const loadDataOnAppStart: RootEpic = (action$, store, { api }) =>
+export const flashOnOrderChangeEpic: RootEpic = (action$, state$, { api, toast }) =>
+  action$.pipe(
+    filter(isActionOf(setCurrOrder)),
+    delay(500),
+    map(() => stopFlashingOrder())
+  );
+
+export const loadDataOnAppStart: RootEpic = (action$, store, { api }) =>
   action$.pipe(
     first(),
     map(loadInstrumentsAsync.request)

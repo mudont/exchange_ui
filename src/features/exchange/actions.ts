@@ -3,6 +3,7 @@ import { OrderFormValues } from 'MyTypes'
 import { createAsyncAction, createStandardAction } from 'typesafe-actions';
 
 export const setCurrOrder = createStandardAction('SET_CURR_ORDER')<OrderFormValues>();
+export const stopFlashingOrder = createStandardAction('STOP_FLASHING_ORDER')();
 
 export const submitOrderAsync = createAsyncAction(
   'SUBMIT_ORDER_REQUEST',
