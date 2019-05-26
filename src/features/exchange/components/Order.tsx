@@ -49,7 +49,7 @@ const LABEL_WIDTH = '100px'
 const label_style = { display: 'block', width: LABEL_WIDTH }
 
 const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
-  const { isSubmitting, order, instruments, values,
+  const { isSubmitting, /*order,*/ instruments, values,
     setFieldValue, dispatch, errors, touched } = props;
   //const symbols = instruments.map(i => ({label: i.symbol}))
   const validateRange = (field: string, minVal: number, maxVal: number) => (value: number): string =>
@@ -57,7 +57,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
 
   return (
     <div style={{ backgroundColor: '#d3edf8', overflow: 'hidden', border: 1, }}>
-      <label style={{ display: 'block', textAlign: 'center', font: '10px', fontWeight: 'bold', backgroundColor: order.is_buy ? buyColor : sellColor }}>
+      <label style={{ display: 'block', textAlign: 'center', font: '10px', fontWeight: 'bold', backgroundColor: values.is_buy === "1" ? buyColor : sellColor }}>
         Place Order Here
       </label>
       <Form>

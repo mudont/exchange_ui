@@ -21,7 +21,7 @@ const Tbl: React.FC<Props> = (props) => {
     Cell: (props: { value: number }) => <RA>{props.value}</RA>,
     width: 35,
   }, {
-    Header: 'Event',
+    Header: 'Symbol',
     accessor: 'symbol',
     width: 100,
   }, {
@@ -54,7 +54,7 @@ const Tbl: React.FC<Props> = (props) => {
       {
         props.row.status === 'WORKING' ?
           <button onClick={() => wsSend({ command: 'cancel', id: props.row.id })}
-            style={{ backgroundColor: 'red', fontSize: 12, padding: "0px 2px" }}>
+            style={{ color: 'red', backgroundColor: 'white', fontWeight:'bold', fontSize: 12, padding: "0px 2px" }}>
             Cancel
             </button>
           : <span className='number'>{props.value}</span>
@@ -68,7 +68,8 @@ const Tbl: React.FC<Props> = (props) => {
     Cell: (props: { value: number }) => <RA>{props.value}</RA>
   }]
   //style={{width: "100%", height: "100%", overflowX:'hidden', overflowY:'scroll'}}
-  return <ReactTable style={{ fontSize: '10px' }}
+  return <ReactTable className='-striped' style={{ fontSize: '10px' }}
+    filterable
     data={data as any}
     columns={columns}
   />
@@ -87,8 +88,8 @@ const MyOrders: React.FC<Props> = props => {
         height: "100%", overflow: "hidden",
         // display:"flex", flexDirection: "column",
       }}>
-      <div className="dragHandle" style={{ backgroundColor: 'lightyellow', width: '100%' }}><label style={{ fontWeight: 'bold' }}>
-        My Acitve Orders</label>
+      <div className="dragHandle" style={{ backgroundColor: 'lightyellow', width: '100%', fontWeight: 'bold'  }}>
+        My Active Orders
       </div>
       <div style={{ overflowX: 'hidden', height: '100%', width: '100%' }}>
         <Tbl my_orders={my_orders} wsSend={wsSend} />

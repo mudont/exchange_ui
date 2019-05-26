@@ -31,6 +31,8 @@ declare module 'MyModels' {
     export type Trade = {
         _type: 'Trade';
         ts: string;
+        buyer: string;
+        seller: string;
         symbol: string; 
         quantity: number;
         price: number;

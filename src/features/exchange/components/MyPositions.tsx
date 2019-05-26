@@ -14,7 +14,7 @@ type Props = {
 const Tbl: React.FC<Props> = (props) => {
     const data = Object.values(props.my_positions)
     const columns = [{
-      Header: 'Event',
+      Header: 'Symbol',
       width:100,
       accessor: 'symbol' // String-based value accessors!
      }, {
@@ -49,8 +49,9 @@ const Tbl: React.FC<Props> = (props) => {
         Cell: (props:{value:number}) => <RA>{props.value.toFixed(2) }</RA>
    }]
   //style={{width: "100%", height: "100%", overflowX:'hidden', overflowY:'scroll'}}
-    return <ReactTable style={{fontSize: '10px'}}
-      data={data as any}
+    return <ReactTable className='-striped' style={{fontSize: '10px'}}
+        filterable
+        data={data as any}
       columns={columns}
     />
   }
@@ -65,8 +66,8 @@ const MyPositions: React.FC<Props> = props => {
             height:"100%", overflow: "hidden",
             // display:"flex", flexDirection: "column",
             }}>
-        <div style={{backgroundColor:buyColor, width:'100%'}}>
-            <label className="dragHandle" style={{fontWeight: 'bold'}}> My Positions</label>
+        <div className="dragHandle" style={{fontWeight: 'bold', backgroundColor:buyColor, width:'100%'}}>
+            My Positions
         </div>
         <div style={{overflowX:'hidden', height:'100%', width:'100%'}}> 
         <Tbl my_positions={my_positions}/>

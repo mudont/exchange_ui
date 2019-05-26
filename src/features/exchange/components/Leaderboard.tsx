@@ -38,7 +38,8 @@ const Tbl: React.FC<Props> = (props) => {
      },
     ]
   //style={{width: "100%", height: "100%", overflowX:'hidden', overflowY:'scroll'}}
-    return <ReactTable style={{fontSize: '10px'}}
+    return <ReactTable className='-striped' style={{fontSize: '12px'}}
+      filterable
       data={data as any}
       columns={columns}
     />

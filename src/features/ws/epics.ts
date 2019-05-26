@@ -13,7 +13,8 @@ export const wsErrorEpic: Epic<RootAction, RootAction, RootState, Services> =
     filter(action => action.payload._type === "Error"),
     tap(action => {
       //console.log(`error : ${JSON.stringify(action)}`)
-      toast.error(`Exchange error ${(action.payload as any).message || "No msg"}`)
+      toast.error(`Exchange error ${(action.payload as any).message || "No msg"}`,
+        {autoClose: 10000})
     }),
     ignoreElements()
   );

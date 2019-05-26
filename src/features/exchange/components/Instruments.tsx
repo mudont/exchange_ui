@@ -161,7 +161,7 @@ const columns = [{
   width: 20,
   filterable: false,
   Expander: ({ isExpanded, ...rest }: ExpanderProps) =>
-    <div>
+    <div style={{ color: 'white' }}>
       {isExpanded
         ? <span>&#10134;</span>
         : <span>&#10133;</span>}
@@ -195,12 +195,18 @@ const Tbl: React.FC<Props> = (props) => {
     filterable
     data={data as any}
     columns={columns}
+    collapseOnDataChange={false}
+    collapseOnSortingChange={false}
+    collapseOnPageChange={false}
     SubComponent={(subprops: { original: Tradeable }) => {
       const row = subprops.original
       console.log(row)
       return (
         <div style={{ padding: "1px" }}>
-          <ReactTable className='-striped' style={{ fontSize: '12px' }}
+          <ReactTable style={{ fontSize: '12px' }}
+            // collapseOnDataChange={false}
+            // collapseOnSortingChange={false}
+            // collapseOnPageChange={false}
             showPagination={false}
             pageSize={row.moreLevels.length}
             data={row.moreLevels}
@@ -227,6 +233,7 @@ const Tbl: React.FC<Props> = (props) => {
                       symbol: symbol, is_buy: false, quantity: bidSweepQty, limit_price: bidPrice,
                       max_show_size: props.currOrder.max_show_size
                     })
+                    //return
                   }
                   if (row && column && (column.id === 'bidPrice' || column.id === 'bidQty' || column.id === 'bidOdds')) {
                     const { symbol, bidPrice } = row.original
@@ -235,6 +242,7 @@ const Tbl: React.FC<Props> = (props) => {
                       symbol: symbol, is_buy: true, quantity: props.currOrder.quantity, limit_price: bidPrice,
                       max_show_size: props.currOrder.max_show_size
                     })
+                    //return
                   }
                   if (row && column && (column.id === 'askPrice' || column.id === 'askQty' || column.id === 'askOdds')) {
                     const { symbol, askPrice } = row.original
@@ -243,6 +251,7 @@ const Tbl: React.FC<Props> = (props) => {
                       symbol: symbol, is_buy: false, quantity: props.currOrder.quantity, limit_price: askPrice,
                       max_show_size: props.currOrder.max_show_size
                     })
+                    //return
                   }
                   if (row && column && column.id === 'aSwp') {
                     const { symbol, askPrice, askSweepQty } = row.original
@@ -251,6 +260,7 @@ const Tbl: React.FC<Props> = (props) => {
                       symbol: symbol, is_buy: true, quantity: askSweepQty, limit_price: askPrice,
                       max_show_size: props.currOrder.max_show_size
                     })
+                    //return
                   }
                   // IMPORTANT! React-Table uses onClick internally to trigger
                   // events like expanding SubComponents and pivots.

@@ -1,23 +1,23 @@
 ## Bug
 - [x] Hitting Return on symbol chooser submits orders. [solution](https://stackoverflow.com/questions/4763638/enter-triggers-button-click)
 - [x] Sometimes ladder doesn't show upon tab
-- [ ] Changing Buy -> Sell in order form doesn't change background color. 
+- [x] Changing Buy -> Sell in order form doesn't change background color. 
 - [ ] ladder layout in last column . should use real estate better
 - [x] Don't show canceled orders
 - [ ] toasts should stay longer, showld get logged to a window
 ## Performance Bugs
-- [ ] client requesting all instruments, my_orders and my_positions
-- [ ] server doesn't need to send canceled orders, maybe even old completed orders
-- [ ] [0,pp,0] rows of ladders are unnecessary now
+- [x] client requesting all instruments, my_orders and my_positions
+- [x] server doesn't need to send canceled orders, maybe even old completed orders
+- [x] [0,pp,0] rows of ladders are unnecessary now
 ## Features
 - User prefs
   + [ ] units probabilities or odds (only if price unit is %prob)
   + [ ] nickname
 - UI
   - [ ] Flash Order when it is changed
-  - [ ] Update Help
+  - [x] Update Help
   - [ ] Add tooltips for detail
-  - [ ] Remove extra space below title bars
+  - [x] Remove extra space below title bars
   - [ ] Make all tables striped, font 12, search field
 - Instrument Table
   + Show odds
@@ -29,6 +29,7 @@
   + [x] Dark theme
   + [ ] show fills for each order
   + [ ] show position? Maybe overkill
+  * [ ] Volume, Open Interest, last price, up/down arrow
 - [ ] Don't sucbsribe any symbols by default. Show depth ladder for all subscribed symbols
 - [ ] Manish would like to see traders' names on fill
 - [ ] back up database regularly and save it somewhere
