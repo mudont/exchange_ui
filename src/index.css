@@ -24,3 +24,7 @@ a:hover,
 .link:hover {
   text-decoration: underline;
 }
+
+label {
+  margin-bottom: 0px;
+}

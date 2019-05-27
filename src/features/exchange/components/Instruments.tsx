@@ -159,13 +159,13 @@ type ExpanderProps = {
 
 }
 const BuyButtonNum = (cn: string) => (props: { row: Tradeable | DepthLevel, value: number }) => props.row[cn] ? 
-  <label data-tip="Click here to join the bid at this level"><BuyRA>{props.value.toFixed(0)} </BuyRA></label> : <div />
+  <label style={{margin:0}} data-tip="Click here to join the bid at this level"><BuyRA>{props.value.toFixed(0)} </BuyRA></label> : <div />
 const SellButtonNum = (cn: string) => (props: { row: Tradeable | DepthLevel, value: number }) => props.row[cn] ? 
-  <label data-tip="Click here to join the ask at this level"><SellRA>{props.value.toFixed(0)} </SellRA> </label>: <div />
+  <label style={{margin:0}} data-tip="Click here to join the ask at this level"><SellRA>{props.value.toFixed(0)} </SellRA> </label>: <div />
 const BuyButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? 
-  <label data-tip="Click here to join the bid at this level"><BuyRA>{props.value} </BuyRA> </label>: <div />
+  <label style={{margin:0}} data-tip="Click here to join the bid at this level"><BuyRA>{props.value} </BuyRA> </label>: <div />
 const SellButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? 
-  <label data-tip="Click here to join the bid at this level"><SellRA>{props.value} </SellRA></label> : <div />
+  <label style={{margin:0}} data-tip="Click here to join the bid at this level"><SellRA>{props.value} </SellRA></label> : <div />
 
 const AggressFld = (myQuotes: SymBsPriceSumm, quoteQty: number | null, buy: boolean, label: string, wsSend: Function) => {
 
