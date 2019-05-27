@@ -20,6 +20,7 @@ import "react-tabs/style/react-tabs.css";
 import Help from './Help';
 import Leaderboard from './Leaderboard'
 
+import ReactTooltip from 'react-tooltip'
 //const MAX_LADDERS = 10
 const ReactGridLayout = WidthProvider(Responsive);
 const originalLayout = getFromLS("layout") || [];
@@ -88,7 +89,7 @@ class LocalStorageLayout_ extends React.PureComponent<MyProps, { layout: Layout[
 
     return (
       <div>
-
+        <ReactTooltip/>
         <TopBar isAuthenticated={isAuthenticated}
           auth={this.props.auth}
           connected={this.props.connected}

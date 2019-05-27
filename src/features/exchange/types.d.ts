@@ -5,7 +5,7 @@ declare module 'MyTypes' {
     symbol: string,
     is_buy: boolean,
     limit_price: number,
-    begin_time: string,
+    order_time: string,
     quantity: number,
     filled_quantity: number,
     status: string,
@@ -33,12 +33,12 @@ declare module 'MyTypes' {
 
 declare module 'react-formik-ui';
 declare module 'react-table/lib/hoc/foldableTable' {
-  import {TableProps} from 'react-table'
+  import { TableProps } from 'react-table'
   import { ComponentType, ComponentClass } from 'react';
 
   declare function selectTableHOC<Props extends Partial<TableProps>>(
     WrappedComponent: ComponentType<Props>,
     options?: SelectTableHOCOptions
-  ): ComponentClass<Props>;
+  ): ComponentClass<Props & SelectTableAdditionalProps>;
   export default FoldableTableHOC
 }

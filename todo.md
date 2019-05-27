@@ -10,40 +10,40 @@
 - [x] server doesn't need to send canceled orders, maybe even old completed orders
 - [x] [0,pp,0] rows of ladders are unnecessary now
 ## Features
-- User prefs
-  + [ ] units probabilities or odds (only if price unit is %prob)
-  + [ ] nickname
 - UI
   - [ ] Flash Order when it is changed
   - [x] Update Help
   - [ ] Add tooltips for detail
   - [x] Remove extra space below title bars
-  - [ ] Make all tables striped, font 12, search field
+  - [x] Make all tables striped, font 12, search field
 - Instrument Table
-  + Show odds
-  + [x] search
-  + [x] buttons lift/hit
-  + [ ] '+' to show depth
   + [ ] show my orders at each level
   + [ ] with cancel button
-  + [x] Dark theme
   + [ ] show fills for each order
-  + [ ] show position? Maybe overkill
   * [ ] Volume, Open Interest, last price, up/down arrow
+  + [x] Show odds
+  + [x] search
+  + [x] buttons lift/hit
+  + [x] '+' to show depth
+  + [x] Dark theme
+  + [ ] show position? Maybe overkill
+- User prefs
+  + [ ] units probabilities or odds (only if price unit is %prob)
+  + [ ] nickname
 - [ ] Don't sucbsribe any symbols by default. Show depth ladder for all subscribed symbols
-- [ ] Manish would like to see traders' names on fill
+- [x] Manish would like to see traders' names on fill
 - [ ] back up database regularly and save it somewhere
 - [ ] "settle" instruments that expire
 - [ ] standard way of copying production db to development machine
 
-  - [ ] Credit Limit Check
+  - [x] Credit Limit Check
   - [x] Leaderboard: Top p&l, volume trading, market making
   - [ ] Self match prevention
   - [ ] Private Groups
-  - [ ] Instrument panel
+  - [x] Instrument panel
   - [ ] ~~Show "my" orders in the ladder
   - [?] Help text below the order dialog
-  - [ ] Errors should be shown to users
+  - [x] Errors should be shown to users
   - [x] my orders
   - my trades
   - [x] Generic Feed Window
@@ -99,7 +99,7 @@
 
 ## Joshua comments
   - [x] Login should be more convenient
-  - [n] Checkbox to show Odds rather than Probabilities
-  - [n] Table row height should stay fixed on expand
+  - [x] Checkbox to show Odds rather than Probabilities
+  - [x] Table row height should stay fixed on expand
   - [?] Order expiration options. Eg: expire orders a beginning of event
   - [ ] Wants to show the Help page first time, then have a Don't show again flag

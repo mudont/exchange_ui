@@ -10,9 +10,16 @@ import { unsubscribeSymbol } from '../../ws/actions';
 //import { Instrument, Depth } from 'MyModels';
 import { createSelector } from 'reselect'
 //import eqProps from 'ramda/es/eqProps';
+import ReactTooltip from 'react-tooltip'
+import { wsSend } from '../../ws/actions';
 import * as R from 'ramda'
 // const buyColor = '#cefdce'
 // const sellColor = '#fdd3ce'
+//type SymBsPriceArr = Array<MyOrder>
+type SymBsPriceSumm = { myQty: number, myFilled: number, mySlice: number, ids: Array<number> }
+type SymBsMap = { [limit_price: number]: SymBsPriceSumm }
+type SymMap = { [bs: number]: SymBsMap }
+type MyOrderMap = { [symbol: string]: SymMap }
 
 type DepthLevel = {
   symbol: string,
@@ -24,6 +31,8 @@ type DepthLevel = {
   askQty: null | number,
   bidSweepQty: number,
   askSweepQty: number,
+  myBids?: SymBsPriceSumm | null,
+  myAsks?: SymBsPriceSumm | null,
 }
 const buyColor = 'darkgreen'
 const sellColor = 'darkred'
@@ -64,10 +73,40 @@ const SellRA: React.FC<{ children: any }> = ({ children }) => {
 }
 const instrSelector = (state: RootState) => Object.values(state.ws.instruments)
 const depthSelector = (state: RootState) => state.ws.depth
+const myOrdersSelector = (state: RootState) => Object.values(state.ws.my_orders)
 const tradeableSelector = createSelector(
   instrSelector,
   depthSelector,
-  (instruments, depth) => {
+  myOrdersSelector,
+  (instruments, depth, myOrders) => {
+
+
+    let myOrderMap: MyOrderMap = {} as { [symbol: string]: {} }
+
+    for (let i = 0; i < myOrders.length; i++) {
+      const { id, symbol, is_buy, limit_price, quantity, filled_quantity, curr_slice, status } = myOrders[i]
+      if (status !== 'WORKING') continue
+      if (!myOrderMap.hasOwnProperty(symbol)) myOrderMap[symbol] = {} as SymMap
+      let symMap: SymMap = myOrderMap[symbol]
+      const bs = is_buy ? 1 : 0
+      if (!symMap.hasOwnProperty(bs)) symMap[bs] = {} as SymBsMap
+      let symBsMap: SymBsMap = symMap[bs]
+      if (!symBsMap.hasOwnProperty(limit_price)) symBsMap[limit_price] = { myQty: 0, myFilled: 0, mySlice: 0, ids: [] }
+      let symBsPriceSumm: SymBsPriceSumm = symBsMap[limit_price]
+
+      symBsPriceSumm.myQty += quantity
+      symBsPriceSumm.myFilled += filled_quantity
+      symBsPriceSumm.mySlice += curr_slice
+      symBsPriceSumm.ids.push(id)
+    }
+    const getMyOrders = (symbol?: string, is_buy?: boolean, limit_price?: number | null) => {
+      if (!(symbol && limit_price && (is_buy !== undefined && is_buy !== null))) return null
+      if (!myOrderMap.hasOwnProperty(symbol)) return null
+      const bs = is_buy ? 1 : 0
+      if (!myOrderMap[symbol].hasOwnProperty(bs)) return null
+      if (!myOrderMap[symbol][bs].hasOwnProperty(limit_price)) return null
+      return myOrderMap[symbol][bs][limit_price]
+    }
     return instruments.map(ins => {
       const ladder = depth[ins.symbol] || []
       //console.log(`${i.symbol} ladder: ${JSON.stringify(ladder, null, 4)}`)
@@ -91,11 +130,16 @@ const tradeableSelector = createSelector(
           bidQty, bidOdds: bidPrice && !ins.symbol.match(/\*$/) ? probToOdds(bidPrice) : null, bidPrice,
           askPrice, askOdds: askPrice && !ins.symbol.match(/\*$/) ? probToOdds(100 - askPrice) : null, askQty,
           bidSweepQty, askSweepQty,
+          myBids: getMyOrders(ins.symbol, true, bidPrice),
+          myAsks: getMyOrders(ins.symbol, false, askPrice),
         })
       }
+      console.log(`${ins.symbol} : myBids:`, getMyOrders(ins.symbol, true, bestBidPrice), getMyOrders(ins.symbol, false, bestAskPrice))
       return {
         ...ins, bestBidQty, bestBidOdds: !bestBidPrice || ins.symbol.match(/\*$/) ? '' : probToOdds(bestBidPrice), bestBidPrice,
         bestAskPrice, bestAskQty, bestAskOdds: !bestAskPrice || ins.symbol.match(/\*$/) ? '' : probToOdds(100 - bestAskPrice),
+        myBids: getMyOrders(ins.symbol, true, bestBidPrice),
+        myAsks: getMyOrders(ins.symbol, false, bestAskPrice),
         moreLevels,
       }
     })
@@ -108,6 +152,7 @@ type Props = {
   currOrder: OrderFormValues,
   handleClick: typeof setCurrOrder,
   unsubscribeSymbol: typeof unsubscribeSymbol,
+  wsSend: typeof wsSend,
 }
 type ExpanderProps = {
   isExpanded: boolean | undefined,
@@ -118,23 +163,56 @@ const SellButtonNum = (cn: string) => (props: { row: Tradeable | DepthLevel, val
 const BuyButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? <BuyRA>{props.value} </BuyRA> : <div />
 const SellButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? <SellRA>{props.value} </SellRA> : <div />
 
-const bidHitCol = {
-  Header: 'Hit', width: 40, filterable: false,
-  Cell: (props: { row: Tradeable, value: number }) => (props.row.bestBidQty ? <SellRA>Hit</SellRA> : <div />)
-}
-const askLiftCol = {
-  Header: 'Lift', width: 40, filterable: false,
-  Cell: (props: { row: Tradeable, value: number }) => (props.row.bestAskQty ? <BuyRA>Lift</BuyRA> : <div />)
+const AggressFld = (myQuotes: SymBsPriceSumm, quoteQty: number | null, buy: boolean, label: string, wsSend: Function) => {
+
+  console.log(`In Instr subTbl `, quoteQty, buy, myQuotes)
+  if (myQuotes) {
+    const { myQty, myFilled, mySlice, ids } = myQuotes
+    const tooltip = `You have Order(s) of ${myQty} at this level, of which ${mySlice} are shown, and ${myFilled} filled. Click on X to cancel order(s)`
+    return <div style={{ fontSize: 10 }} >
+      <ReactTooltip />
+      <button
+        style={{
+          backgroundColor: 'red', borderRadius: 0,
+          color: 'white', fontSize: 10, padding: "0px 0px",
+        }}
+        onClick={() => ids.map((id: number) => wsSend({ command: 'cancel', id }))}
+      >
+        X
+     </button>
+      <span data-tip={tooltip}> {`${mySlice}/${myQty}|${myFilled}`} </span>
+
+    </div>
+  } else if (quoteQty) {
+    const tooltip = `Click here to populate Order Form on left. Then click Submit in Order form to get filled`
+  return <span data-tip={tooltip}> {buy ? <BuyRA>{label}</BuyRA> : <SellRA>{label}</SellRA>}</span>
+  }
+  return <span> </span>
 }
 
-const bidSwpCol = {
-  Header: 'Sweep', accessor: 'bSwp', width: 40, filterable: false,
-  Cell: (props: { row: DepthLevel, value: number }) => (props.row.bidQty ? <SellRA>Sweep</SellRA> : <div />)
-}
-const askSwpCol = {
-  Header: 'Sweep', accessor: 'aSwp', width: 40, filterable: false,
-  Cell: (props: { row: DepthLevel, value: number }) => (props.row.askQty ? <BuyRA>Sweep</BuyRA> : <div />)
-}
+const bidHitCol = (wsSend: Function) => ({
+  Header: 'Hit', width: 50, filterable: false,
+  Cell: (props: { original: Tradeable, row: Tradeable, value: number }) =>
+    AggressFld(props.original.myBids, props.row.bestBidQty, false, 'Hit', wsSend)
+})
+const askLiftCol = (wsSend: Function) => ({
+  Header: 'Lift', width: 50, filterable: false,
+  Cell: (props: { original: Tradeable, row: Tradeable, value: number }) =>
+    AggressFld(props.original.myAsks, props.row.bestAskQty, true, 'Lift', wsSend)
+})
+
+const bidSwpCol = (wsSend: Function) => ({
+  Header: 'Sweep', accessor: 'bSwp', width: 50, filterable: false,
+  Cell: (props: { original: Tradeable, row: DepthLevel, value: number }) =>
+    AggressFld(props.original.myBids, props.row.bidQty, false, 'Sweep', wsSend)
+  // (props.row.bidQty ? <SellRA>Sweep</SellRA> : <div />)
+})
+const askSwpCol = (wsSend: Function) => ({
+  Header: 'Sweep', accessor: 'aSwp', width: 50, filterable: false,
+  Cell: (props: { original: Tradeable, row: DepthLevel, value: number }) =>
+    AggressFld(props.original.myAsks, props.row.askQty, true, 'Sweep', wsSend)
+  //(props.row.askQty ? <BuyRA>Sweep</BuyRA> : <div />)
+})
 const atCol = { Header: () => <RA>@</RA>, width: 14, filterable: false, Cell: () => <span style={{ fontSize: '10px' }}>@</span> }
 const bidQtyCol = (cn: string) => ({
   Header: () => <RA>Qty</RA>, width: 40, filterable: false, accessor: cn,
@@ -145,7 +223,7 @@ const bidPriceCol = (cn: string) => ({ Header: () => <RA>Bid</RA>, width: 25, fi
 const askPriceCol = (cn: string) => ({ Header: () => <RA>Ask</RA>, width: 25, filterable: false, accessor: cn, Cell: SellButtonNum(cn) })
 const askOddsCol = (cn: string) => ({ Header: () => <RA>Odds</RA>, width: 45, filterable: false, accessor: cn, Cell: SellButtonStr(cn) })
 const askQtyCol = (cn: string) => ({ Header: () => <RA>Qty</RA>, width: 40, filterable: false, accessor: cn, Cell: SellButtonNum(cn) })
-const columns = [{
+const columns = (props: Props) => [{
   Header: 'Symbol',
   width: 80,
   accessor: 'symbol' // String-based value accessors!
@@ -174,7 +252,7 @@ const columns = [{
     userSelect: "none"
   },
 },
-  bidHitCol,
+bidHitCol(props.wsSend),
 bidQtyCol('bestBidQty'),
 bidOddsCol('bestBidOdds'),
 bidPriceCol('bestBidPrice'),
@@ -182,7 +260,8 @@ bidPriceCol('bestBidPrice'),
 askPriceCol('bestAskPrice'),
 askOddsCol('bestAskOdds'),
 askQtyCol('bestAskQty'),
-  askLiftCol]
+askLiftCol(props.wsSend)]
+
 const noHdr = (o: {}) => R.omit(['Header'], o)
 
 //  
@@ -194,7 +273,7 @@ const Tbl: React.FC<Props> = (props) => {
   return <ReactTable className='-striped' style={{ fontSize: '12px' }}
     filterable
     data={data as any}
-    columns={columns}
+    columns={columns(props)}
     collapseOnDataChange={false}
     collapseOnSortingChange={false}
     collapseOnPageChange={false}
@@ -212,7 +291,7 @@ const Tbl: React.FC<Props> = (props) => {
             data={row.moreLevels}
             columns={[
               { Cell: '', width: 220 },
-              noHdr(bidSwpCol),
+              noHdr(bidSwpCol(props.wsSend)),
               noHdr(bidQtyCol('bidQty')),
               noHdr(bidOddsCol('bidOdds')),
               noHdr(bidPriceCol('bidPrice')),
@@ -220,9 +299,10 @@ const Tbl: React.FC<Props> = (props) => {
               noHdr(askPriceCol('askPrice')),
               noHdr(askOddsCol('askOdds')),
               noHdr(askQtyCol('askQty')),
-              noHdr(askSwpCol),
+              noHdr(askSwpCol(props.wsSend)),
             ]}
             getTdProps={(state: any, row: undefined | { original: DepthLevel }, column: undefined | { id: string, Header: string }, instance: any) => {
+
               return {
                 onClick: (e: Event, handleOriginal: Function) => {
                   console.log(`row clicked`, row, column)
@@ -351,6 +431,7 @@ const Instruments: React.FC<Props> = props => {
          {/* </label> */}
       </div>
       <div style={{ overflowX: 'hidden', height: '100%', width: '100%' }}>
+        <ReactTooltip />
         <Tbl {...props} />
 
       </div>
@@ -366,6 +447,7 @@ const mapStateToProps = (state: RootState, ) => ({
 const dispatchProps = {
   handleClick: setCurrOrder,
   unsubscribeSymbol: unsubscribeSymbol,
+  wsSend: wsSend,
 };
 
 export default connect(mapStateToProps, dispatchProps)(Instruments);

@@ -26,6 +26,7 @@ declare module 'MyModels' {
         limit_price: number;
         max_show_size: number;
         filled_quantity: number;
+        curr_slice: number;
         status: string;
     };
     export type Trade = {
