@@ -184,7 +184,7 @@ const AggressFld = (myQuotes: SymBsPriceSumm, quoteQty: number | null, buy: bool
       >
         X
      </button>
-      <span data-tip={tooltip}> {`${mySlice}/${myQty}|${myFilled}`} </span>
+      <span data-tip={tooltip}> {`${myFilled}/${myQty}|${mySlice}`} </span>
 
     </div>
   } else if (quoteQty) {
