@@ -158,10 +158,14 @@ type ExpanderProps = {
   isExpanded: boolean | undefined,
 
 }
-const BuyButtonNum = (cn: string) => (props: { row: Tradeable | DepthLevel, value: number }) => props.row[cn] ? <BuyRA>{props.value.toFixed(0)} </BuyRA> : <div />
-const SellButtonNum = (cn: string) => (props: { row: Tradeable | DepthLevel, value: number }) => props.row[cn] ? <SellRA>{props.value.toFixed(0)} </SellRA> : <div />
-const BuyButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? <BuyRA>{props.value} </BuyRA> : <div />
-const SellButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? <SellRA>{props.value} </SellRA> : <div />
+const BuyButtonNum = (cn: string) => (props: { row: Tradeable | DepthLevel, value: number }) => props.row[cn] ? 
+  <label data-tip="Click here to join the bid at this level"><BuyRA>{props.value.toFixed(0)} </BuyRA></label> : <div />
+const SellButtonNum = (cn: string) => (props: { row: Tradeable | DepthLevel, value: number }) => props.row[cn] ? 
+  <label data-tip="Click here to join the ask at this level"><SellRA>{props.value.toFixed(0)} </SellRA> </label>: <div />
+const BuyButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? 
+  <label data-tip="Click here to join the bid at this level"><BuyRA>{props.value} </BuyRA> </label>: <div />
+const SellButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, value: string }) => props.row[cn] ? 
+  <label data-tip="Click here to join the bid at this level"><SellRA>{props.value} </SellRA></label> : <div />
 
 const AggressFld = (myQuotes: SymBsPriceSumm, quoteQty: number | null, buy: boolean, label: string, wsSend: Function) => {
 
@@ -184,40 +188,37 @@ const AggressFld = (myQuotes: SymBsPriceSumm, quoteQty: number | null, buy: bool
 
     </div>
   } else if (quoteQty) {
-    const tooltip = `Click here to populate Order Form on left. Then click Submit in Order form to get filled`
-  return <span data-tip={tooltip}> {buy ? <BuyRA>{label}</BuyRA> : <SellRA>{label}</SellRA>}</span>
+    const tooltip = `Click here to populate Order Form on left. Then click Submit in Order form to send an aggressive order and get filled`
+    return <span data-tip={tooltip}> {buy ? <BuyRA>{label}</BuyRA> : <SellRA>{label}</SellRA>}</span>
   }
   return <span> </span>
 }
 
 const bidHitCol = (wsSend: Function) => ({
-  Header: 'Hit', width: 50, filterable: false,
+  Header: 'Hit', width: 55, filterable: false,
   Cell: (props: { original: Tradeable, row: Tradeable, value: number }) =>
     AggressFld(props.original.myBids, props.row.bestBidQty, false, 'Hit', wsSend)
 })
 const askLiftCol = (wsSend: Function) => ({
-  Header: 'Lift', width: 50, filterable: false,
+  Header: 'Lift', width: 55, filterable: false,
   Cell: (props: { original: Tradeable, row: Tradeable, value: number }) =>
     AggressFld(props.original.myAsks, props.row.bestAskQty, true, 'Lift', wsSend)
 })
 
 const bidSwpCol = (wsSend: Function) => ({
-  Header: 'Sweep', accessor: 'bSwp', width: 50, filterable: false,
+  Header: 'Sweep', accessor: 'bSwp', width: 55, filterable: false,
   Cell: (props: { original: Tradeable, row: DepthLevel, value: number }) =>
     AggressFld(props.original.myBids, props.row.bidQty, false, 'Sweep', wsSend)
   // (props.row.bidQty ? <SellRA>Sweep</SellRA> : <div />)
 })
 const askSwpCol = (wsSend: Function) => ({
-  Header: 'Sweep', accessor: 'aSwp', width: 50, filterable: false,
+  Header: 'Sweep', accessor: 'aSwp', width: 55, filterable: false,
   Cell: (props: { original: Tradeable, row: DepthLevel, value: number }) =>
     AggressFld(props.original.myAsks, props.row.askQty, true, 'Sweep', wsSend)
   //(props.row.askQty ? <BuyRA>Sweep</BuyRA> : <div />)
 })
 const atCol = { Header: () => <RA>@</RA>, width: 14, filterable: false, Cell: () => <span style={{ fontSize: '10px' }}>@</span> }
-const bidQtyCol = (cn: string) => ({
-  Header: () => <RA>Qty</RA>, width: 40, filterable: false, accessor: cn,
-  Cell: (props: { row: Tradeable, value: number }) => props.row[cn] ? <BuyRA>{props.value.toFixed(0)}</BuyRA> : <div />
-})
+const bidQtyCol = (cn: string) => ({Header: () => <RA>Qty</RA>, width: 40, filterable: false, accessor: cn, Cell: BuyButtonNum(cn)})
 const bidOddsCol = (cn: string) => ({ Header: () => <RA>Odds</RA>, width: 45, filterable: false, accessor: cn, Cell: BuyButtonStr(cn) })
 const bidPriceCol = (cn: string) => ({ Header: () => <RA>Bid</RA>, width: 25, filterable: false, accessor: cn, Cell: BuyButtonNum(cn) })
 const askPriceCol = (cn: string) => ({ Header: () => <RA>Ask</RA>, width: 25, filterable: false, accessor: cn, Cell: SellButtonNum(cn) })
