@@ -226,12 +226,12 @@ const askOddsCol = (cn: string) => ({ Header: () => <RA>Odds</RA>, width: 45, fi
 const askQtyCol = (cn: string) => ({ Header: () => <RA>Qty</RA>, width: 40, filterable: false, accessor: cn, Cell: SellButtonNum(cn) })
 const columns = (props: Props) => [{
   Header: 'Symbol',
-  width: 80,
+  width: 90,
   accessor: 'symbol' // String-based value accessors!
 }, {
   id: 'name', // Required because our accessor is not a string
   Header: 'Name',
-  width: 120,
+  width: 160,
   accessor: 'name', // Custom value accessors!
   foldable: true,
 }, {
@@ -291,7 +291,7 @@ const Tbl: React.FC<Props> = (props) => {
             pageSize={row.moreLevels.length}
             data={row.moreLevels}
             columns={[
-              { Cell: '', width: 220 },
+              { Cell: '', width: 270 },
               noHdr(bidSwpCol(props.wsSend)),
               noHdr(bidQtyCol('bidQty')),
               noHdr(bidOddsCol('bidOdds')),
@@ -441,10 +441,16 @@ const Instruments: React.FC<Props> = props => {
 }
 
 
-const mapStateToProps = (state: RootState, ) => ({
-  tradeables: tradeableSelector(state),
-  currOrder: state.exchange.currOrder,
-});
+const mapStateToProps = (state: RootState, ) => {
+  console.time('tradeables')
+  const tradeables = tradeableSelector(state)
+
+  console.timeEnd('tradeables')
+  return ({
+    tradeables,
+    currOrder: state.exchange.currOrder,
+  });
+}
 const dispatchProps = {
   handleClick: setCurrOrder,
   unsubscribeSymbol: unsubscribeSymbol,
