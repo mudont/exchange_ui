@@ -11,15 +11,15 @@
 - [x] [0,pp,0] rows of ladders are unnecessary now
 ## Features
 - UI
-  - [ ] Flash Order when it is changed
+  - [x] Flash Order when it is changed
   - [x] Update Help
-  - [ ] Add tooltips for detail
+  - [x] Add tooltips for detail
   - [x] Remove extra space below title bars
   - [x] Make all tables striped, font 12, search field
 - Instrument Table
-  + [ ] show my orders at each level
-  + [ ] with cancel button
-  + [ ] show fills for each order
+  + [x] show my orders at each level
+  + [x] with cancel button
+  + [x] show fills for each order
   * [ ] Volume, Open Interest, last price, up/down arrow
   + [x] Show odds
   + [x] search

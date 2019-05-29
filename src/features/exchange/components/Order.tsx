@@ -76,7 +76,7 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
             value={values.symbol}
             onBlur={(e: any) => {
 
-              console.log(`DEBUG subscribing ${e.target.value}`)
+              //console.log(`DEBUG subscribing ${e.target.value}`)
               dispatch(subscribeSymbol(e.target.value))
             }
             }

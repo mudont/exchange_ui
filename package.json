@@ -1,11 +1,11 @@
 {
-  "name": "react-redux-typescript-realworld-app",
-  "description": "RealWorld App implementation based on \"react-redux-typescript-guide\"",
+  "name": "exchange_ui",
+  "description": "A trading UI",
   "homepage": ".",
   "version": "0.1.0",
   "private": true,
-  "author": "Piotr Witek <piotrek.witek@gmail.com> (http://piotrwitek.github.io/)",
-  "repository": "https://github.com/piotrwitek/react-redux-typescript-realworld-app.git",
+  "author": "Anuha Gayam (GayamTech@gmail.com)",
+  "repository": "https://github.com/mudont/exchange_ui.git", 
   "license": "MIT",
   "main": "src/index.tsx",
   "scripts": {

@@ -128,16 +128,16 @@ const tradeableSelector = createSelector(
         moreLevels.push({
           symbol: ins.symbol,
           bidQty, bidOdds: bidPrice && !ins.symbol.match(/\*$/) ? probToOdds(bidPrice) : null, bidPrice,
-          askPrice, askOdds: askPrice && !ins.symbol.match(/\*$/) ? probToOdds(100 - askPrice) : null, askQty,
+          askPrice, askOdds: askPrice && !ins.symbol.match(/\*$/) ? probToOdds(askPrice) : null, askQty,
           bidSweepQty, askSweepQty,
           myBids: getMyOrders(ins.symbol, true, bidPrice),
           myAsks: getMyOrders(ins.symbol, false, askPrice),
         })
       }
-      console.log(`${ins.symbol} : myBids:`, getMyOrders(ins.symbol, true, bestBidPrice), getMyOrders(ins.symbol, false, bestAskPrice))
+      //console.log(`${ins.symbol} : myBids:`, getMyOrders(ins.symbol, true, bestBidPrice), getMyOrders(ins.symbol, false, bestAskPrice))
       return {
         ...ins, bestBidQty, bestBidOdds: !bestBidPrice || ins.symbol.match(/\*$/) ? '' : probToOdds(bestBidPrice), bestBidPrice,
-        bestAskPrice, bestAskQty, bestAskOdds: !bestAskPrice || ins.symbol.match(/\*$/) ? '' : probToOdds(100 - bestAskPrice),
+        bestAskPrice, bestAskQty, bestAskOdds: !bestAskPrice || ins.symbol.match(/\*$/) ? '' : probToOdds(bestAskPrice),
         myBids: getMyOrders(ins.symbol, true, bestBidPrice),
         myAsks: getMyOrders(ins.symbol, false, bestAskPrice),
         moreLevels,
@@ -169,7 +169,7 @@ const SellButtonStr = (cn: string) => (props: { row: Tradeable | DepthLevel, val
 
 const AggressFld = (myQuotes: SymBsPriceSumm, quoteQty: number | null, buy: boolean, label: string, wsSend: Function) => {
 
-  console.log(`In Instr subTbl `, quoteQty, buy, myQuotes)
+  //console.log(`In Instr subTbl `, quoteQty, buy, myQuotes)
   if (myQuotes) {
     const { myQty, myFilled, mySlice, ids } = myQuotes
     const tooltip = `You have Order(s) of ${myQty} at this level, of which ${mySlice} are shown, and ${myFilled} filled. Click on X to cancel order(s)`
@@ -280,7 +280,7 @@ const Tbl: React.FC<Props> = (props) => {
     collapseOnPageChange={false}
     SubComponent={(subprops: { original: Tradeable }) => {
       const row = subprops.original
-      console.log(row)
+      //console.log(row)
       return (
         <div style={{ padding: "1px" }}>
           <ReactTable style={{ fontSize: '12px' }}
@@ -306,10 +306,10 @@ const Tbl: React.FC<Props> = (props) => {
 
               return {
                 onClick: (e: Event, handleOriginal: Function) => {
-                  console.log(`row clicked`, row, column)
+                  //console.log(`row clicked`, row, column)
                   if (row && column && column.id === 'bSwp') {
                     const { symbol, bidPrice, bidSweepQty } = row.original
-                    console.log(`Hit clicked`)
+                    //console.log(`Hit clicked`)
                     props.handleClick({
                       symbol: symbol, is_buy: false, quantity: bidSweepQty, limit_price: bidPrice,
                       max_show_size: props.currOrder.max_show_size
@@ -318,7 +318,7 @@ const Tbl: React.FC<Props> = (props) => {
                   }
                   if (row && column && (column.id === 'bidPrice' || column.id === 'bidQty' || column.id === 'bidOdds')) {
                     const { symbol, bidPrice } = row.original
-                    console.log(`bbpq clicked`)
+                    //console.log(`bbpq clicked`)
                     props.handleClick({
                       symbol: symbol, is_buy: true, quantity: props.currOrder.quantity, limit_price: bidPrice,
                       max_show_size: props.currOrder.max_show_size
@@ -327,7 +327,7 @@ const Tbl: React.FC<Props> = (props) => {
                   }
                   if (row && column && (column.id === 'askPrice' || column.id === 'askQty' || column.id === 'askOdds')) {
                     const { symbol, askPrice } = row.original
-                    console.log(`bapq clicked`)
+                    //console.log(`bapq clicked`)
                     props.handleClick({
                       symbol: symbol, is_buy: false, quantity: props.currOrder.quantity, limit_price: askPrice,
                       max_show_size: props.currOrder.max_show_size
@@ -336,7 +336,7 @@ const Tbl: React.FC<Props> = (props) => {
                   }
                   if (row && column && column.id === 'aSwp') {
                     const { symbol, askPrice, askSweepQty } = row.original
-                    console.log(`Lift clicked`)
+                    //console.log(`Lift clicked`)
                     props.handleClick({
                       symbol: symbol, is_buy: true, quantity: askSweepQty, limit_price: askPrice,
                       max_show_size: props.currOrder.max_show_size
@@ -369,10 +369,10 @@ const Tbl: React.FC<Props> = (props) => {
     getTdProps={(state: any, row: undefined | { original: Tradeable }, column: undefined | { id: string, Header: string }, instance: any) => {
       return {
         onClick: (e: Event, handleOriginal: Function) => {
-          console.log(`row clicked`, column)
+          //console.log(`row clicked`, column)
           if (row && column && column.Header === 'Hit') {
             const { symbol, bestBidPrice, bestBidQty } = row.original
-            console.log(`Hit clicked`)
+            //console.log(`Hit clicked`)
             props.handleClick({
               symbol: symbol, is_buy: false, quantity: bestBidQty, limit_price: bestBidPrice,
               max_show_size: props.currOrder.max_show_size
@@ -380,7 +380,7 @@ const Tbl: React.FC<Props> = (props) => {
           }
           if (row && column && (column.id === 'bestBidPrice' || column.id === 'bestBidQty' || column.id === 'bestBidOdds')) {
             const { symbol, bestBidPrice } = row.original
-            console.log(`bbpq clicked`)
+            //console.log(`bbpq clicked`)
             props.handleClick({
               symbol: symbol, is_buy: true, quantity: props.currOrder.quantity, limit_price: bestBidPrice,
               max_show_size: props.currOrder.max_show_size
@@ -388,7 +388,7 @@ const Tbl: React.FC<Props> = (props) => {
           }
           if (row && column && (column.id === 'bestAskPrice' || column.id === 'bestAskQty' || column.id === 'bestAskOdds')) {
             const { symbol, bestAskPrice } = row.original
-            console.log(`bapq clicked`)
+            //console.log(`bapq clicked`)
             props.handleClick({
               symbol: symbol, is_buy: false, quantity: props.currOrder.quantity, limit_price: bestAskPrice,
               max_show_size: props.currOrder.max_show_size
@@ -396,7 +396,7 @@ const Tbl: React.FC<Props> = (props) => {
           }
           if (row && column && column.Header === 'Lift') {
             const { symbol, bestAskPrice, bestAskQty } = row.original
-            console.log(`Lift clicked`)
+            //console.log(`Lift clicked`)
             props.handleClick({
               symbol: symbol, is_buy: true, quantity: bestAskQty, limit_price: bestAskPrice,
               max_show_size: props.currOrder.max_show_size
