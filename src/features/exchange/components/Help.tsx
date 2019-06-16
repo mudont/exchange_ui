@@ -64,7 +64,7 @@ These are the symbols like 'India*', with a country name and an asterisk
 They allow you to bet on a team's performance over the entire tournament (hat tip Tyler Steele).
 
 The final settlement price is calculated as follows
-- 6 points for each round robin win. So a maximum of 54 points available in RR.
+- 6 points for each round robin win. 3 for a split. So a maximum of 54 points available in RR.
 - 14 points for winning the semi
 - 32 points for winning the cup
 - multiply the total by 0.01 

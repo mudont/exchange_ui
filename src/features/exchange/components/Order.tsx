@@ -185,8 +185,9 @@ const InnerForm: React.FC<Props & FormikProps<OrderFormValues>> = props => {
         You will see your orders<br />
         in the MyOrders window<br />
         Then try canceling them<br />
-        by clicking on the Red<br />
-        X in the MyOrders window.<br />
+        by clicking on the Cancel<br />
+        button in the MyOrders window.<br />
+        or the Red X in the Instruments Window <br/>
         <br />
         A more interesting order,<br />
         might be:
